@@ -20,12 +20,12 @@ const useStyles = makeStyles((theme) => {
       maxWidth: 400,
     },
   
-    register : {
+    login : {
       color: 'blue'
     }
   }
 })
-const Login : NextPage = () => {
+const Register : NextPage = () => {
   const styles = useStyles();
   const router = useRouter();
   const { account_type } = router.query;
@@ -75,9 +75,12 @@ const Login : NextPage = () => {
                 align='center'
                 mb={1}
               >
-                Login
+                Register
               </Typography>
-              <InputField label="username or email" name="usernameOrEmail"/>
+              <InputField label="email" name="email"/>
+              <InputField label="username" name="username"/>
+              <InputField label="first name" name="first_name"/>
+              <InputField label="last name" name="last_name"/>
               <InputField label="password" name="password" type="password"/>
               <Button
                 variant="contained"
@@ -90,8 +93,8 @@ const Login : NextPage = () => {
               <Typography
                 textAlign='center'
               >
-                Already have an account yet? <Link href={`/register?account_type=${account_type}`}>
-                  <a className={styles.register}>
+                Already have an account yet? <Link href={`/login?account_type=${account_type}`}>
+                  <a className={styles.login}>
                     register
                   </a>
                 </Link>
@@ -99,11 +102,10 @@ const Login : NextPage = () => {
               </Typography>
             </Form>
           </Card>
-
         </Formik>
       </Container>
     </main>
   );
 };
 
-export default Login;
+export default Register;

@@ -3,15 +3,9 @@ import { makeStyles } from '@mui/styles'
 import type { NextPage } from 'next'
 import Link from 'next/link'
 
-const useStyles = makeStyles({
-  container : {
-    padding : 20
-  }
-})
 const Home: NextPage = () => {
-  const styles = useStyles();
   return (
-    <main className={styles.container}>
+    <main>
       <Container>
         <Stack 
           // direction='row'
