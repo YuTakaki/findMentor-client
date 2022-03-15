@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { authResponseType, authSlicerStateType, userType } from "../../types/types";
 import { loginAction } from "../actions/authActions";
 
-const initialState = {
+
+const initialState : authSlicerStateType = {
   loading: false,
-  auth: {},
+  user: {},
   is_auth: null,
 }
 const authSlicers = createSlice({
@@ -13,9 +15,19 @@ const authSlicers = createSlice({
   extraReducers: (builder) => {
     //login
     builder.addCase(loginAction.pending, (state, action) => {
+      state.loading = true;
 
     });
     builder.addCase(loginAction.fulfilled, (state, action) => {
+      const payload : authResponseType = action.payload!
+      state.loading = false;
+      state.user = payload.user;
+      state.is_auth = true;
+
+    });
+    builder.addCase(loginAction.rejected, (state, action) => {
+      state.loading = false;
+      state.is_auth = false;
 
     });
   }
