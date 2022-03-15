@@ -16,19 +16,16 @@ const authSlicers = createSlice({
     //login
     builder.addCase(loginAction.pending, (state) => {
       state.loading = true;
-
     });
     builder.addCase(loginAction.fulfilled, (state, action) => {
       const payload : authResponseType = action.payload!
       state.loading = false;
       state.user = payload.user;
       state.is_auth = true;
-
     });
     builder.addCase(loginAction.rejected, (state) => {
       state.loading = false;
       state.is_auth = false;
-
     });
   }
 });
