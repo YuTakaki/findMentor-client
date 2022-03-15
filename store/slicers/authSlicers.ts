@@ -14,7 +14,7 @@ const authSlicers = createSlice({
   reducers:{},
   extraReducers: (builder) => {
     //login
-    builder.addCase(loginAction.pending, (state, action) => {
+    builder.addCase(loginAction.pending, (state) => {
       state.loading = true;
 
     });
@@ -25,7 +25,7 @@ const authSlicers = createSlice({
       state.is_auth = true;
 
     });
-    builder.addCase(loginAction.rejected, (state, action) => {
+    builder.addCase(loginAction.rejected, (state) => {
       state.loading = false;
       state.is_auth = false;
 
