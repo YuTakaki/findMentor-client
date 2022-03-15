@@ -66,7 +66,7 @@ const Register : NextPage = () => {
         >
           <Card 
             sx={{maxWidth: 400, margin: 'auto'}}
-            elevation={2}
+            elevation={10}
           >
             <Form className={styles.form}>
               <Typography

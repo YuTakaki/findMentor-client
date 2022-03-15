@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => {
 const Login : NextPage = () => {
   const styles = useStyles();
   const router = useRouter();
-  const { account_type } = router.query;
+  const account_type = router.query['account_type'];
   const initialValues = {
     usernameOrEmail : '',
     password : '',
@@ -37,11 +37,18 @@ const Login : NextPage = () => {
   const validationSchema = yup.object({
     usernameOrEmail : yup.string().required(),
     password: yup.string().required()
-  })
+  });
+
   
   useEffect(() => {
-    if (!account_type) router.push('/');
+    if (router.isReady) {
+      if (!account_type) {
+        router.push('/');
+      }
+    };
   }, [account_type, router])
+  
+  
   const login = (values : any) => {
     console.log(values);
   }
