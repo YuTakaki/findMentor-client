@@ -1,12 +1,14 @@
 import { Button, Card, Container, Typography} from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikHelpers } from 'formik'
 import { NextPage } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import * as yup from 'yup'
 import InputField from '../components/common/Formik/InputField'
+import { loginAction } from '../store/actions/authActions'
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -24,11 +26,19 @@ const useStyles = makeStyles((theme) => {
       color: 'blue'
     }
   }
-})
+});
+
+type loginFormTypes = {
+  usernameOrEmail: string,
+  password: string
+}
+
 const Login : NextPage = () => {
   const styles = useStyles();
   const router = useRouter();
   const account_type = router.query['account_type'];
+  const dispatch = useDispatch();
+
   const initialValues = {
     usernameOrEmail : '',
     password : '',
@@ -49,8 +59,16 @@ const Login : NextPage = () => {
   }, [account_type, router])
   
   
-  const login = (values : any) => {
-    console.log(values);
+  const login = async(values : any, {setErrors}: FormikHelpers<loginFormTypes>) => {
+    try {
+      const login: any = await dispatch(loginAction());
+      if ('error' in login) {
+        setErrors(login.payload);
+      }
+      console.log(login);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
