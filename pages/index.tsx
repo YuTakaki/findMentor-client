@@ -16,3 +16,11 @@ const Home: NextPage = () => {
 }
 
 export default Home
+// export async function getServerSideProps() {
+//   console.log(1);
+//   return {
+//     props : {
+//       x : 1
+//     }
+//   }
+// }

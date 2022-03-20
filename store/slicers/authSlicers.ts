@@ -22,7 +22,8 @@ const authSlicers = createSlice({
       state.loading = false;
       state.user = payload.user;
       state.is_auth = true;
-      localStorage.setItem('find_mentor_token', payload.token)
+      localStorage.setItem('find_mentor_token', payload.token);
+      // document.cookie = `token=${payload.token}`
     });
     builder.addCase(loginAction.rejected, (state) => {
       state.loading = false;
@@ -39,6 +40,7 @@ const authSlicers = createSlice({
       state.user = payload.user;
       state.is_auth = true;
       localStorage.setItem('find_mentor_token', payload.token);
+      // document.cookie = `token=${payload.token}`
     });
     builder.addCase(registerAction.rejected, (state) => {
       state.loading = false;
