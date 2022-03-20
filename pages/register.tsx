@@ -30,19 +30,26 @@ const Register : NextPage = () => {
   const router = useRouter();
   const { account_type } = router.query;
   const initialValues = {
-    usernameOrEmail : '',
+    username : '',
     password : '',
+    email: '',
+    first_name: '',
+    last_name: '',
   }
   
   const validationSchema = yup.object({
-    usernameOrEmail : yup.string().required(),
-    password: yup.string().required()
+    username : yup.string().required(),
+    password: yup.string().required(),
+    email : yup.string().required(),
+    first_name: yup.string().required(),
+    last_name: yup.string().required()
   })
   
   useEffect(() => {
     if (!account_type) router.push('/');
-  }, [account_type, router])
-  const login = (values : any) => {
+  }, [account_type, router]);
+  
+  const register = (values : any) => {
     console.log(values);
   }
 
@@ -61,7 +68,7 @@ const Register : NextPage = () => {
         </Link>
         <Formik
           initialValues={initialValues}
-          onSubmit={login}
+          onSubmit={register}
           validationSchema={validationSchema}
         >
           <Card 
