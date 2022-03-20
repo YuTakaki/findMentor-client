@@ -31,8 +31,6 @@ const useStyles = makeStyles((theme) => {
 
 const Login : NextPage = () => {
   const styles = useStyles();
-  const router = useRouter();
-  const account_type = router.query['account_type'];
   const dispatch = useDispatch();
 
   const initialValues = {
@@ -103,7 +101,7 @@ const Login : NextPage = () => {
               <Typography
                 textAlign='center'
               >
-                Already have an account yet? <Link href={`/register?account_type=${account_type}`}>
+                Already have an account yet? <Link href='/type'>
                   <a className={styles.register}>
                     register
                   </a>
