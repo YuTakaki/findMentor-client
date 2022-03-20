@@ -1,12 +1,15 @@
 import { Button, Card, Container, Typography} from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikHelpers } from 'formik'
 import { NextPage } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import * as yup from 'yup'
 import InputField from '../components/common/Formik/InputField'
+import { registerAction } from '../store/actions/authActions'
+import { registerFormTypes } from '../types/types'
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -27,9 +30,10 @@ const useStyles = makeStyles((theme) => {
 })
 const Register : NextPage = () => {
   const styles = useStyles();
+  const dispatch = useDispatch();
   const router = useRouter();
-  const { account_type } = router.query;
-  const initialValues = {
+  const account_type = router.query['account_type'];
+  const initialValues : registerFormTypes = {
     username : '',
     password : '',
     email: '',
@@ -46,11 +50,28 @@ const Register : NextPage = () => {
   })
   
   useEffect(() => {
-    if (!account_type) router.push('/');
-  }, [account_type, router]);
-  
-  const register = (values : any) => {
-    console.log(values);
+    if (router.isReady) {
+      if (!account_type) {
+        router.push('/');
+      }
+    };
+  }, [account_type, router])
+
+  const register = async(values : registerFormTypes, { setErrors } : FormikHelpers<registerFormTypes>) => {
+    try {
+      const data = {
+        ...values,
+        account_type
+      };
+      const register : any = await dispatch(registerAction(data));
+      if ('error' in register) {
+        setErrors(register.payload);
+      } else {
+        router.push('/profile/info');
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (

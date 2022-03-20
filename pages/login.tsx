@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux'
 import * as yup from 'yup'
 import InputField from '../components/common/Formik/InputField'
 import { loginAction } from '../store/actions/authActions'
+import { loginFormTypes } from '../types/types'
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -28,11 +29,6 @@ const useStyles = makeStyles((theme) => {
   }
 });
 
-type loginFormTypes = {
-  usernameOrEmail: string,
-  password: string
-}
-
 const Login : NextPage = () => {
   const styles = useStyles();
   const router = useRouter();
@@ -50,18 +46,10 @@ const Login : NextPage = () => {
   });
 
   
-  useEffect(() => {
-    if (router.isReady) {
-      if (!account_type) {
-        router.push('/');
-      }
-    };
-  }, [account_type, router])
-  
   
   const login = async(values : any, {setErrors}: FormikHelpers<loginFormTypes>) => {
     try {
-      const login: any = await dispatch(loginAction());
+      const login: any = await dispatch(loginAction(values));
       if ('error' in login) {
         setErrors(login.payload);
       }
