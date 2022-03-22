@@ -4,16 +4,26 @@ import { Provider } from 'react-redux'
 import { store } from '../store/store'
 import { useEffect } from 'react'
 import { verifyTokenAction } from '../store/actions/authActions'
+import { ThemeProvider } from '@mui/styles'
+import { createTheme } from '@mui/material'
 
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     store.dispatch(verifyTokenAction());
   }, []);
+
+  const theme = {
+    palette: {
+      mode: 'dark',
+    },
+  }
   return (
     <Provider
       store={store}
     >
-      <Component {...pageProps} />
+      <ThemeProvider theme={theme}>
+        <Component {...pageProps} />
+      </ThemeProvider>
     </Provider>
   )
 }
