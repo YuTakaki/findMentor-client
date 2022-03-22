@@ -15,13 +15,11 @@ const PrivateRoute = (Component: NextPage) => {
         {is_auth === true ? (
           <Component {...props}/>
         ) :  (
-          <h1>No one</h1>
+          <h1>Loading</h1>
         )}
       </>
     )
   }
-
-
   return HOC
 }
 

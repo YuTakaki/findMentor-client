@@ -39,9 +39,12 @@ export const verifyTokenAction = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const verifyTokenRequest = await axios.get(`${NEXT_PUBLIC_SERVER}/api/auth/verify`);
-      console.log(verifyTokenRequest);
+      return verifyTokenRequest.data;
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error)){
+        console.log(error.response!.data)
+        return rejectWithValue(error.response!.data);
+      }
     }
   }
 )
