@@ -4,25 +4,34 @@ import { Provider } from 'react-redux'
 import { store } from '../store/store'
 import { useEffect } from 'react'
 import { verifyTokenAction } from '../store/actions/authActions'
-import { ThemeProvider } from '@mui/styles'
-import { createTheme } from '@mui/material'
-
+import { createTheme,  ThemeProvider } from '@mui/material/styles';
+import { Box } from '@mui/material'
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     store.dispatch(verifyTokenAction());
   }, []);
 
-  const theme = {
+  const theme = createTheme({
     palette: {
-      mode: 'dark',
-    },
-  }
+      mode: 'light'
+    }
+  })
   return (
     <Provider
       store={store}
     >
       <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
+        <Box
+          id='root'
+          color='primary'
+          sx={{
+            height: '100vh',
+            width: '100%',
+            bgcolor: 'background.default'
+          }}
+        >
+          <Component {...pageProps} />
+        </Box>
       </ThemeProvider>
     </Provider>
   )

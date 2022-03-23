@@ -9,6 +9,7 @@ const Home: NextPage = () => {
       <a>
         <Button
           variant='contained'
+          color='primary'
         >Login</Button>
       </a>
     </Link>
