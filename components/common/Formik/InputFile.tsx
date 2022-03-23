@@ -26,8 +26,9 @@ const InputFile = ({
           }}
           onChange={(e) => {
             fields.onChange(e);
-            if(setPreviewImg){
-              setPreviewImg(URL.createObjectURL(e.target.files[0]));
+            const target = e.target as HTMLInputElement;
+            if(setPreviewImg && target.files){
+              setPreviewImg(URL.createObjectURL(target.files[0]));
             }
           }}
         />
