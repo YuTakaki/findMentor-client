@@ -23,7 +23,6 @@ const InputField = ({
         label={label}
         type={type}
         {...fields}
-        required
         fullWidth
         minRows={minRows}
         multiline={multiline}

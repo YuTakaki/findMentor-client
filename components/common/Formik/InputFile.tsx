@@ -25,6 +25,7 @@ const InputFile = ({
             display: 'none'
           }}
           onChange={(e) => {
+            fields.onChange(e);
             if(setPreviewImg){
               setPreviewImg(URL.createObjectURL(e.target.files[0]));
             }

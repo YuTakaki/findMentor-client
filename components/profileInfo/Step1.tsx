@@ -53,7 +53,7 @@ const Step1 = ({setActiveStepHandler} : step1PropType) => {
 
   const submitHandler = async(values : step1FormType) => {
     try {
-      // setActiveStepHandler(1);
+      setActiveStepHandler(1);
       console.log(values);
     } catch (error) {
       console.log(error);     
@@ -88,7 +88,7 @@ const Step1 = ({setActiveStepHandler} : step1PropType) => {
           >
             <CardMedia
               component="img"
-              image={previewImg || '/images/dummy1.jpg'}
+              image={previewImg || '/images/previewImg.png'}
               sx={{
                 borderRadius: 150,
                 height: 150,

@@ -7,6 +7,7 @@ import {
 import Stepper from '@mui/material/Stepper';
 import { Box } from '@mui/material/node_modules/@mui/system';
 import Step1 from '../../components/profileInfo/Step1';
+import Step2 from '../../components/profileInfo/Step2';
 
 
 
@@ -46,6 +47,8 @@ const Info = () => {
       </Box>
       {activeStep === 0 ? (
         <Step1 setActiveStepHandler={setActiveStepHandler}/>
+      ) : activeStep === 1 ? (
+        <Step2 setActiveStepHandler={setActiveStepHandler}/>
       ) : (
         <></>
       )}
