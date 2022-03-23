@@ -16,7 +16,7 @@ const Info = () => {
   const [activeStep, setActiveStep] = useState(0);
 
   const setActiveStepHandler = (step_num : number) => {
-    setActiveStep(1);
+    setActiveStep(step_num);
   }
 
   return (
