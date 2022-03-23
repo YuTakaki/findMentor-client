@@ -28,3 +28,9 @@ export type registerFormTypes = {
   last_name?: string,
   account_type? : string | string[] | undefined
 }
+
+export type step1FormType = {
+  job_position : string,
+  bio: string,
+  profileImg: string,
+}

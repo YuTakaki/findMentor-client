@@ -3,11 +3,15 @@ import { FieldHookConfig, useField } from 'formik';
 import React from 'react'
 
 type InputFieldPropsType = {
-  label : string
+  label : string,
+  multiline?: boolean,
+  minRows?: number,
 };
 const InputField = ({
   label,
   type,
+  multiline = false,
+  minRows = 1,
   ...props
  } : FieldHookConfig<string> & InputFieldPropsType) => {
 
@@ -21,6 +25,8 @@ const InputField = ({
         {...fields}
         required
         fullWidth
+        minRows={minRows}
+        multiline={multiline}
       />
       {meta.touched && meta.error && (
         <Typography
