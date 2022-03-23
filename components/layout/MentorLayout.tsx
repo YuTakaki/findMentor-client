@@ -1,4 +1,4 @@
-import { AppBar, Avatar, Box, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from '@mui/material'
+import { AppBar, Avatar, Box, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography, Button } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { NextPage } from 'next'
 import React, { useRef, useState } from 'react'
@@ -7,14 +7,16 @@ const useStyle = makeStyles({
   layout : {
     display: 'flex',
     padding: 0,
+    minHeight: '100vh !important',
   },
 
   mainBox: {
     flex: 1
   },
   header: {
-    height: '100vh',
+    minHeight: '100vh',
     maxWidth: 250,
+    padding: 20,
   },
   nav: {
     flexDirection: 'column',
@@ -22,13 +24,13 @@ const useStyle = makeStyles({
     gridGap: 10,
   }
 })
-const MentorLayout = ({children} : any) => {
+const MentorLayout = ({children, setCurrentThemeHandler} : any) => {
   const style = useStyle();
   const profileSettingsRef = useRef<HTMLDivElement>(null);
   const [openMenu, setOpenMenu] = useState(false);
 
   const toggleMenuSettings = () => {
-    setOpenMenu(!openMenu)
+    setOpenMenu(!openMenu);
   }
   return (
     <Box
@@ -38,6 +40,7 @@ const MentorLayout = ({children} : any) => {
       <AppBar
         className={style.header}
         position='static'
+        color='primary'
       >
         <Toolbar component='nav' className={style.nav}>
           <Typography>Page</Typography>
@@ -45,9 +48,19 @@ const MentorLayout = ({children} : any) => {
           <Typography>Page</Typography>
           <Typography>Page</Typography>
         </Toolbar>
+        <Button 
+          variant='contained' 
+          color='secondary'
+          sx={{
+            width: 'max-content',
+            margin: 'auto auto 0',
+          }}
+          onClick={setCurrentThemeHandler}
+        >Toggle Dark Theme</Button>
+        
       </AppBar>
       <div className={style.mainBox}>
-        <AppBar position='static' color='transparent'>
+        <AppBar position='static' color='transparent' elevation={1}>
           <Toolbar 
             sx={{
               marginLeft: 'auto'

@@ -32,13 +32,13 @@ const useStyle =makeStyles({
     }
   }
 })
-const Info = () => {
+const Info = ({...props}) => {
   const steps = ['User Information', 'Programming languages', 'Pay Rate'];
   const styles = useStyle();
 
 
   return (
-    <MentorLayout>
+    <MentorLayout {...props}>
       <Container
         sx={{
           padding: 4
@@ -55,7 +55,9 @@ const Info = () => {
             activeStep={2}
           >
             {steps.map((step, i) => (
-              <Step key={step} completed={i < 2 && true}>
+              <Step sx={{'& .MuiStepLabel-root .Mui-completed': {
+                color: 'secondary',
+              }}} key={step} completed={i < 2 && true}>
                 <StepLabel>{step}</StepLabel>
               </Step>
             ))}
@@ -93,6 +95,7 @@ const Info = () => {
             <label htmlFor='file'>
               <Button
                 variant='contained'
+                color='secondary'
               >
                 Upload Image
               </Button>
@@ -116,6 +119,7 @@ const Info = () => {
             <Button
               type='submit'
               variant='contained'
+              color='secondary'
               sx={{
                 width: 'max-content',
                 marginLeft: 'auto'
