@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { authResponseType, authSlicerStateType, userType } from "../../types/types";
-import { loginAction, registerAction, verifyTokenAction } from "../actions/authActions";
+import { addAdditionalInfoAction, loginAction, registerAction, verifyTokenAction } from "../actions/authActions";
 
 const initialState : authSlicerStateType = {
   loading: false,
   user: {},
   is_auth: null,
+  error: null,
 }
 
 const authPendingBuilder = (state : authSlicerStateType) => {
@@ -17,6 +18,9 @@ const authFulfilledBuilder = (state : authSlicerStateType, action : PayloadActio
   state.loading = false;
   state.user = payload.user;
   state.is_auth = true;
+  if (payload.error !== undefined) {
+    state.error = payload.error
+  }
 }
 
 const authRejectedBuilder = (state : authSlicerStateType) => {
@@ -39,10 +43,15 @@ const authSlicers = createSlice({
     builder.addCase(registerAction.fulfilled, authFulfilledBuilder);
     builder.addCase(registerAction.rejected, authRejectedBuilder);
 
-    //register
+    //verify
     builder.addCase(verifyTokenAction.pending, authPendingBuilder);
     builder.addCase(verifyTokenAction.fulfilled, authFulfilledBuilder);
     builder.addCase(verifyTokenAction.rejected, authRejectedBuilder);
+
+    builder.addCase(addAdditionalInfoAction.pending, authPendingBuilder);
+    builder.addCase(addAdditionalInfoAction.fulfilled, (state, action) => {
+      state.user = action.payload
+    });
   }
 });
 

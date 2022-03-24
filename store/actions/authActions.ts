@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { loginFormTypes, registerFormTypes } from "../../types/types";
+import { loginFormTypes, registerFormTypes, step1FormType } from "../../types/types";
 
 const { NEXT_PUBLIC_SERVER } = process.env;
 axios.defaults.withCredentials = true;
@@ -45,6 +45,22 @@ export const verifyTokenAction = createAsyncThunk(
         console.log(error.response!.data)
         return rejectWithValue(error.response!.data);
       }
+    }
+  }
+)
+
+export const addAdditionalInfoAction = createAsyncThunk(
+  'auth/addAdditionalInfoAction',
+  async (data : step1FormType) => {
+    try {
+      const uploadData = new FormData();
+      uploadData.append('profile_img', data.profile_img);
+      uploadData.append('job_position', data.job_position);
+      uploadData.append('bio', data.bio)
+      const saveUserInfo = await axios.post(`${process.env.NEXT_PUBLIC_SERVER}/api/auth/additional`, uploadData);
+      return saveUserInfo.data.user;
+    } catch (error) {
+      console.log(error);
     }
   }
 )

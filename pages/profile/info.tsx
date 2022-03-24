@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { 
   Container,  
   Step, 
@@ -9,11 +9,13 @@ import { Box } from '@mui/material/node_modules/@mui/system';
 import Step1 from '../../components/profileInfo/Step1';
 import Step2 from '../../components/profileInfo/Step2';
 
-
-
 const Info = () => {
   const steps = ['User Information', 'Programming languages', 'Pay Rate'];
   const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+
+  }, []);
 
   const setActiveStepHandler = (step_num : number) => {
     setActiveStep(step_num);
@@ -56,4 +58,4 @@ const Info = () => {
   )
 }
 
-export default Info
+export default Info;

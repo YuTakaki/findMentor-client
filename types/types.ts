@@ -6,13 +6,15 @@ export type userType = {
 
 export type authResponseType = {
   user : userType,
-  token : string
+  token : string,
+  error : null | number
 }
 
 export type authSlicerStateType = {
   loading: boolean,
   user: userType | unknown,
   is_auth: null | boolean,
+  error?: null | number
 }
 
 export type loginFormTypes = {
@@ -32,5 +34,5 @@ export type registerFormTypes = {
 export type step1FormType = {
   job_position : string,
   bio: string,
-  profileImg: string,
+  profile_img: '' | File,
 }
