@@ -12,7 +12,7 @@ import { RootStateOrAny, useSelector } from 'react-redux';
 
 const Info = () => {
   const steps = ['User Information', 'Programming languages', 'Pay Rate'];
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState<number>();
   const error = useSelector((state: RootStateOrAny) => state.authReducer.error);
 
   useEffect(() => {

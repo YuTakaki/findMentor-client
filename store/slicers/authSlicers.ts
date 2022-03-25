@@ -50,7 +50,10 @@ const authSlicers = createSlice({
 
     builder.addCase(addAdditionalInfoAction.pending, authPendingBuilder);
     builder.addCase(addAdditionalInfoAction.fulfilled, (state, action) => {
-      state.user = action.payload
+      state.user = {
+        ...action.payload,
+        profile_img: `${process.env.NEXT_PUBLIC_SERVER}${action.payload.profile_img}`
+      }
     });
   }
 });

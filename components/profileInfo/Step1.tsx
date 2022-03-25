@@ -13,7 +13,7 @@ import { step1FormType } from '../../types/types';
 import InputFile from '../common/Formik/InputFile';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { addAdditionalInfoAction } from '../../store/actions/authActions';
 
 const useStyle =makeStyles({
@@ -42,11 +42,12 @@ const Step1 = ({setActiveStepHandler} : step1PropType) => {
   const styles = useStyle();
   const formikRef = useRef<FormikProps<step1FormType>>(null);
   const dispatch = useDispatch();
-  const [previewImg, setPreviewImg] = useState<null | string>()
+  const [previewImg, setPreviewImg] = useState<null | string>();
+  const user = useSelector((state: RootStateOrAny) => state.authReducer.user);
   const initialValues : step1FormType= {
-    job_position: '',
-    bio: '',
-    profile_img: '',
+    job_position: user.job_position || '',
+    bio: user.bio || '',
+    profile_img: user.profile_img || '',
   };
 
   const validationSchema = yup.object({
@@ -57,7 +58,15 @@ const Step1 = ({setActiveStepHandler} : step1PropType) => {
 
   const submitHandler = async(values : step1FormType) => {
     try {
-      await dispatch(addAdditionalInfoAction(values))
+      let check_result = false;
+      for (let key in values) {
+        if(values[key as keyof step1FormType] !== user[key]) {
+          check_result = true;
+        }
+      }
+      if (check_result === true) {
+        await dispatch(addAdditionalInfoAction(values))
+      }
       setActiveStepHandler(1);
     } catch (error) {
       console.log(error);     
@@ -94,7 +103,7 @@ const Step1 = ({setActiveStepHandler} : step1PropType) => {
             >
               <CardMedia
                 component="img"
-                image={previewImg || '/images/previewImg.png'}
+                image={previewImg || `${user.profile_img}` ||'/images/previewImg.png'}
                 sx={{
                   borderRadius: 150,
                   height: 150,
