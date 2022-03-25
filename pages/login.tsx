@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => {
 const Login : NextPage = () => {
   const styles = useStyles();
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const initialValues = {
     usernameOrEmail : '',
@@ -50,8 +51,10 @@ const Login : NextPage = () => {
       const login: any = await dispatch(loginAction(values));
       if ('error' in login) {
         setErrors(login.payload);
+      } else {
+        const user = login.payload.user
+        router.push(`/${user.account_type}`)
       }
-      console.log(login);
     } catch (error) {
       console.log(error);
     }
