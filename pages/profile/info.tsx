@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { 
+  Button,
   Container,  
   Step, 
   StepLabel, 
@@ -12,7 +13,7 @@ import { RootStateOrAny, useSelector } from 'react-redux';
 
 const Info = () => {
   const steps = ['User Information', 'Programming languages', 'Pay Rate'];
-  const [activeStep, setActiveStep] = useState<number>();
+  const [activeStep, setActiveStep] = useState<number>(NaN);
   const error = useSelector((state: RootStateOrAny) => state.authReducer.error);
 
   useEffect(() => {
@@ -56,7 +57,9 @@ const Info = () => {
       ) : activeStep === 1 ? (
         <Step2 setActiveStepHandler={setActiveStepHandler}/>
       ) : (
-        <></>
+        <>
+          <Button onClick={() => setActiveStepHandler(1)}>sample</Button>
+        </>
       )}
     </Container>
   )

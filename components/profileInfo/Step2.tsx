@@ -1,6 +1,9 @@
-import { Autocomplete, AutocompleteRenderOptionState, Box, Button, Chip, Stack, TextField, Typography } from '@mui/material'
-import React, { SyntheticEvent, useRef, useState } from 'react'
+import { Autocomplete, Button, Chip, Stack, TextField, Typography } from '@mui/material'
+import axios from 'axios'
+import React, { SyntheticEvent, useEffect, useState } from 'react'
 
+
+const {NEXT_PUBLIC_SERVER} = process.env;
 type step2PropsType = {
   setActiveStepHandler: Function
 }
@@ -9,6 +12,19 @@ const Step2 = ({setActiveStepHandler} : step2PropsType) => {
   const [userLanguages, setUserLanguages] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [showError, setShowError] = useState(false);
+
+  useEffect(() => {
+    (async() => {
+      try {
+        const getUsersProgLanguages = await axios.get(`${NEXT_PUBLIC_SERVER}/api/skills/`);
+        const data = getUsersProgLanguages.data.skills.map((_data : {skill : string}) => _data.skill)
+        setUserLanguages(data);
+        
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
 
 
   const deleteLangHandler = (index : number) => {
@@ -25,6 +41,19 @@ const Step2 = ({setActiveStepHandler} : step2PropsType) => {
     }
     setInputValue('');
   };
+
+  const saveHandler = async() => {
+    try {
+      if(userLanguages.length > 0){
+        await axios.post(`${NEXT_PUBLIC_SERVER}/api/skills/`, userLanguages);
+        setActiveStepHandler(2)
+      } else {
+        setShowError(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <Stack
@@ -86,13 +115,7 @@ const Step2 = ({setActiveStepHandler} : step2PropsType) => {
         <Button
           variant='contained'
           color='secondary'
-          onClick={() => {
-            if(userLanguages.length > 0){
-              setActiveStepHandler(2)
-            } else {
-              setShowError(true)
-            }
-          }}
+          onClick={saveHandler}
         >
           Next
         </Button>
