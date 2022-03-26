@@ -51,13 +51,16 @@ export const verifyTokenAction = createAsyncThunk(
 
 export const addAdditionalInfoAction = createAsyncThunk(
   'auth/addAdditionalInfoAction',
-  async (data : step1FormType) => {
+  async (data : step1FormType | { pay_rate : number | '' }) => {
     try {
-      const uploadData = new FormData();
-      uploadData.append('profile_img', data.profile_img);
-      uploadData.append('job_position', data.job_position);
-      uploadData.append('bio', data.bio)
-      const saveUserInfo = await axios.post(`${process.env.NEXT_PUBLIC_SERVER}/api/auth/additional`, uploadData);
+      let uploadData = new FormData();
+      if (!('pay_rate' in data)) {
+        uploadData.append('profile_img', data.profile_img);
+        uploadData.append('job_position', data.job_position);
+        uploadData.append('bio', data.bio) 
+      }
+      const data_to_send = 'pay_rate' in data ? data : uploadData;
+      const saveUserInfo = await axios.post(`${process.env.NEXT_PUBLIC_SERVER}/api/auth/additional`, data_to_send);
       return saveUserInfo.data.user;
     } catch (error) {
       console.log(error);

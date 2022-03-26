@@ -36,3 +36,7 @@ export type step1FormType = {
   bio: string,
   profile_img: '' | File,
 }
+
+export type StepPropType = {
+  setActiveStepHandler: Function
+}

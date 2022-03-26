@@ -1,9 +1,12 @@
 import React from 'react'
 import PrivateRoute from '../../components/hoc/PrivateRoute'
+import MentorLayout from '../../components/layout/MentorLayout'
 
-const Index = () => {
+const Index = ({...props}) => {
   return (
-    <div>Index</div>
+    <MentorLayout {...props}>
+      <div>Index</div>
+    </MentorLayout>
   )
 }
 

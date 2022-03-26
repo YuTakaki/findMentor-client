@@ -9,7 +9,7 @@ import { makeStyles } from '@mui/styles';
 import { Form, Formik, FormikProps } from 'formik';
 import InputField from '../common/Formik/InputField';
 import * as yup from 'yup';
-import { step1FormType } from '../../types/types';
+import { step1FormType, StepPropType } from '../../types/types';
 import InputFile from '../common/Formik/InputFile';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import axios from 'axios';
@@ -35,10 +35,7 @@ const useStyle =makeStyles({
   }
 })
 
-type step1PropType = {
-  setActiveStepHandler: Function
-}
-const Step1 = ({setActiveStepHandler} : step1PropType) => {
+const Step1 = ({setActiveStepHandler} : StepPropType) => {
   const styles = useStyle();
   const formikRef = useRef<FormikProps<step1FormType>>(null);
   const dispatch = useDispatch();
@@ -73,6 +70,11 @@ const Step1 = ({setActiveStepHandler} : step1PropType) => {
     }
   }
 
+  const image = () => {
+    return previewImg || user.profile_img.startsWith('/media') ? 
+    `${process.env.NEXT_PUBLIC_SERVER}${user.profile_img}` : `${user.profile_img}` ||'/images/previewImg.png'
+  }
+
   return (
     <Formik
       initialValues={initialValues}
@@ -103,7 +105,7 @@ const Step1 = ({setActiveStepHandler} : step1PropType) => {
             >
               <CardMedia
                 component="img"
-                image={previewImg || `${user.profile_img}` ||'/images/previewImg.png'}
+                image={image()}
                 sx={{
                   borderRadius: 150,
                   height: 150,

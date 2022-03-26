@@ -10,6 +10,7 @@ import { Box } from '@mui/material/node_modules/@mui/system';
 import Step1 from '../../components/profileInfo/Step1';
 import Step2 from '../../components/profileInfo/Step2';
 import { RootStateOrAny, useSelector } from 'react-redux';
+import Step3 from '../../components/profileInfo/Step3';
 
 const Info = () => {
   const steps = ['User Information', 'Programming languages', 'Pay Rate'];
@@ -57,9 +58,7 @@ const Info = () => {
       ) : activeStep === 1 ? (
         <Step2 setActiveStepHandler={setActiveStepHandler}/>
       ) : (
-        <>
-          <Button onClick={() => setActiveStepHandler(1)}>sample</Button>
-        </>
+        <Step3 setActiveStepHandler={setActiveStepHandler}/>
       )}
     </Container>
   )

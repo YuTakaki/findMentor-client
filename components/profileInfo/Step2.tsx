@@ -1,13 +1,12 @@
 import { Autocomplete, Button, Chip, Stack, TextField, Typography } from '@mui/material'
 import axios from 'axios'
 import React, { SyntheticEvent, useEffect, useState } from 'react'
+import { StepPropType } from '../../types/types';
 
 
 const {NEXT_PUBLIC_SERVER} = process.env;
-type step2PropsType = {
-  setActiveStepHandler: Function
-}
-const Step2 = ({setActiveStepHandler} : step2PropsType) => {
+
+const Step2 = ({setActiveStepHandler} : StepPropType) => {
   const languages = ['javascript', 'java', 'python',1,2,3,4,5,6,7,3,8];
   const [userLanguages, setUserLanguages] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState('');
