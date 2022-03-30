@@ -15,6 +15,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import axios from 'axios';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { addAdditionalInfoAction } from '../../store/actions/authActions';
+import { getImageUrl } from '../../utils/getImageUrl';
 
 const useStyle =makeStyles({
   updateImageStack : {
@@ -70,11 +71,6 @@ const Step1 = ({setActiveStepHandler} : StepPropType) => {
     }
   }
 
-  const image = () => {
-    return previewImg || user.profile_img.startsWith('/media') ? 
-    `${process.env.NEXT_PUBLIC_SERVER}${user.profile_img}` : `${user.profile_img}` ||'/images/previewImg.png'
-  }
-
   return (
     <Formik
       initialValues={initialValues}
@@ -105,7 +101,7 @@ const Step1 = ({setActiveStepHandler} : StepPropType) => {
             >
               <CardMedia
                 component="img"
-                image={image()}
+                image={getImageUrl(user, previewImg)}
                 sx={{
                   borderRadius: 150,
                   height: 150,

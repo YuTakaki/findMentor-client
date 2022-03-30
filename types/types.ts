@@ -1,7 +1,8 @@
 export type userType = {
   username: string,
   email: string,
-  id: string
+  id: string,
+  profile_img?: string,
 }
 
 export type authResponseType = {
