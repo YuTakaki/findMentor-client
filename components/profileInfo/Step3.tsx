@@ -7,6 +7,7 @@ import { StepPropType } from '../../types/types'
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux'
 import { addAdditionalInfoAction } from '../../store/actions/authActions'
 import { useRouter } from 'next/router'
+import { changeErrorAction } from '../../store/slicers/authSlicers'
 
 type payRateType = {
   pay_rate: number | ''
@@ -24,8 +25,9 @@ const Step3 = ({setActiveStepHandler} : StepPropType) => {
 
   const submitHandler = async(values: payRateType) => {
     try {
-      await dispatch(addAdditionalInfoAction(values))
-      router.push('/mentor')
+      await dispatch(addAdditionalInfoAction(values));
+      await dispatch(changeErrorAction(null));
+      router.push('/mentor');
     } catch (error) {
       console.log(error);     
     }

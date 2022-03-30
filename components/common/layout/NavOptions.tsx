@@ -1,37 +1,46 @@
-import { Button, Toolbar, Typography } from '@mui/material'
-import { makeStyles } from '@mui/styles';
-import { AppProps } from 'next/app';
+import { Button, Typography } from '@mui/material'
+import { styled } from '@mui/system';
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { changeThemeAction } from '../../../store/slicers/themeSlicers';
 
-const useStyle = makeStyles(() => ({
-  nav: {
-    marginTop: 20,
-    flexDirection: 'column',
-    alignItems: 'start',
-    gridGap: 10,
-  }
-}))
+const Nav = styled('nav')({
+  marginTop: 20,
+  flexDirection: 'column',
+  alignItems: 'start',
+  gridGap: 10,
+  
+});
+
 const NavOptions = () => {
   const dispatch = useDispatch();
-  const style = useStyle();
-  
+
   return (
     <>
       <Typography
         component='h1'
         fontSize={30}
         textAlign='center'
+        sx={{
+          color: 'white'
+        }}
       >
         Find Mentor
       </Typography>
-      <Toolbar component='nav' className={style.nav}>
-        <Typography>Page</Typography>
-        <Typography>Page</Typography>
-        <Typography>Page</Typography>
-        <Typography>Page</Typography>
-      </Toolbar>
+      <Nav>
+        <Typography sx={{
+          color: 'white'
+        }}>Page</Typography>
+        <Typography sx={{
+          color: 'white'
+        }}>Page</Typography>
+        <Typography sx={{
+          color: 'white'
+        }}>Page</Typography>
+        <Typography sx={{
+          color: 'white'
+        }}>Page</Typography>
+      </Nav>
       <Button 
         variant='contained' 
         color='secondary'

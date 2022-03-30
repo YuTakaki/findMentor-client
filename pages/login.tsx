@@ -1,5 +1,5 @@
 import { Button, Card, Container, Typography} from '@mui/material'
-import { makeStyles } from '@mui/styles'
+import { styled } from '@mui/styles'
 import { Form, Formik, FormikHelpers } from 'formik'
 import { NextPage } from 'next'
 import Link from 'next/link'
@@ -11,26 +11,18 @@ import InputField from '../components/common/Formik/InputField'
 import { loginAction } from '../store/actions/authActions'
 import { loginFormTypes } from '../types/types'
 
-const useStyles = makeStyles((theme) => {
-  return {
-    form : {
-      margin: "auto",
-      padding: 20,
-      display: 'flex',
-      flexDirection: 'column',
-      gridGap: 20,
-      width: '100%',
-      maxWidth: 400,
-    },
-  
-    register : {
-      color: 'blue'
-    }
-  }
+
+const FormContainer = styled('div')({
+  margin: "auto",
+  padding: 20,
+  display: 'flex',
+  flexDirection: 'column',
+  gridGap: 20,
+  width: '100%',
+  maxWidth: 400,
 });
 
 const Login : NextPage = () => {
-  const styles = useStyles();
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -82,38 +74,41 @@ const Login : NextPage = () => {
             sx={{maxWidth: 400, margin: 'auto'}}
             elevation={2}
           >
-            <Form className={styles.form}>
-              <Typography
-                variant='h2'
-                fontSize={20}
-                align='center'
-                mb={1}
-              >
-                Login
-              </Typography>
-              <InputField label="username or email" name="usernameOrEmail"/>
-              <InputField label="password" name="password" type="password"/>
-              <Button
-                variant="contained"
-                type='submit'
-              >
-                Submit
-              </Button>
+            <Form>
 
-              <hr />
-              <Typography
-                textAlign='center'
-              >
-                Already have an account yet? <Link href='/type'>
-                  <a className={styles.register}>
-                    register
-                  </a>
-                </Link>
-                
-              </Typography>
+              <FormContainer>
+                <Typography
+                  variant='h2'
+                  fontSize={20}
+                  align='center'
+                  mb={1}
+                >
+                  Login
+                </Typography>
+                <InputField label="username or email" name="usernameOrEmail"/>
+                <InputField label="password" name="password" type="password"/>
+                <Button
+                  variant="contained"
+                  type='submit'
+                >
+                  Submit
+                </Button>
+
+                <hr />
+                <Typography
+                  textAlign='center'
+                >
+                  Already have an account yet?
+                  <Link href='/type'>
+                    <a style={{color: 'blue'}}>
+                      register
+                    </a>
+                  </Link>
+                  
+                </Typography>
+              </FormContainer>
             </Form>
           </Card>
-
         </Formik>
       </Container>
     </main>

@@ -1,6 +1,4 @@
 import { Button, Container, Stack } from '@mui/material'
-import { makeStyles } from '@mui/styles'
-import type { NextPage } from 'next'
 import Link from 'next/link'
 
 const Type = () => {

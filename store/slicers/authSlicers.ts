@@ -31,7 +31,11 @@ const authRejectedBuilder = (state : authSlicerStateType) => {
 const authSlicers = createSlice({
   name: "auth",
   initialState,
-  reducers:{},
+  reducers:{
+    changeErrorAction: (state, action) => {
+      state.error = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     //login
     builder.addCase(loginAction.pending, authPendingBuilder);
@@ -58,4 +62,7 @@ const authSlicers = createSlice({
   }
 });
 
+export const {
+  changeErrorAction,
+} = authSlicers.actions;
 export const authReducer = authSlicers.reducer

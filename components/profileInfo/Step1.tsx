@@ -3,41 +3,29 @@ import {
   Stack,
   CardMedia,
   Button,
-  Box,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/styles';
 import { Form, Formik, FormikProps } from 'formik';
 import InputField from '../common/Formik/InputField';
 import * as yup from 'yup';
 import { step1FormType, StepPropType } from '../../types/types';
 import InputFile from '../common/Formik/InputFile';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import axios from 'axios';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { addAdditionalInfoAction } from '../../store/actions/authActions';
 import { getImageUrl } from '../../utils/getImageUrl';
 
-const useStyle =makeStyles({
-  updateImageStack : {
-    width: '100%',
-    '@media(min-width: 600px)' : {
-      width: '30%',
-    }
-  },
 
-  infoForm : {
-    width: '100%',
+const InfoForm = styled('section')({
+  width: '100%',
     display: 'flex',
     flexDirection: 'column',
     gridGap: 20,
     '@media(min-width: 600px)' : {
       width: '70%',
     }
-  }
 })
 
 const Step1 = ({setActiveStepHandler} : StepPropType) => {
-  const styles = useStyle();
   const formikRef = useRef<FormikProps<step1FormType>>(null);
   const dispatch = useDispatch();
   const [previewImg, setPreviewImg] = useState<null | string>(null);
@@ -91,13 +79,19 @@ const Step1 = ({setActiveStepHandler} : StepPropType) => {
             sx={{
               maxWidth : 900,
               margin: 'auto',
+              
             }}
           >
             <Stack
               direction='column'
-              className={styles.updateImageStack}
               alignItems='center'
               spacing={2}
+              sx={{
+                width: '100%',
+                '@media(min-width: 600px)' : {
+                  width: '30%',
+                }
+              }}
             >
               <CardMedia
                 component="img"
@@ -110,9 +104,7 @@ const Step1 = ({setActiveStepHandler} : StepPropType) => {
               ></CardMedia>
               <InputFile label='' name='profile_img' setPreviewImg={setPreviewImg} setFieldValue={setFieldValue}/>
             </Stack>
-            <Box
-              className={styles.infoForm}
-            >
+            <InfoForm>
               <InputField label='job position' name='job_position' />
               <InputField label='Bio' name='bio' multiline={true} minRows={8} />
   
@@ -127,7 +119,7 @@ const Step1 = ({setActiveStepHandler} : StepPropType) => {
               >
                 Sumbit
               </Button>
-            </Box>
+            </InfoForm>
           </Stack>
         </Form>
       )}

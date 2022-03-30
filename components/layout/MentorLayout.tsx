@@ -1,5 +1,5 @@
-import { AppBar, Avatar, Box, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography, Drawer } from '@mui/material'
-import { makeStyles } from '@mui/styles'
+import { AppBar, Avatar, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography, Drawer } from '@mui/material'
+import { styled } from '@mui/styles'
 import MenuIcon from '@mui/icons-material/Menu';
 import React, { useRef, useState } from 'react'
 import { RootStateOrAny, useSelector } from 'react-redux'
@@ -7,73 +7,58 @@ import { getImageUrl } from '../../utils/getImageUrl'
 import theme from '../../styles/theme/theme'
 import NavOptions from '../common/layout/NavOptions'
 
-const useStyle = (mode : 'light' | 'dark') => {
-  return makeStyles(() => {
-    const style = theme(mode)
-    return {
-      layout : {
-        display: 'flex',
-        padding: 0,
-        minHeight: '100vh !important',
-        '&' : {
-          color: 'white'
 
-        }
-      },
-    
-      mainBox: {
-        flex: 1
-      },
-      header: {
-        minHeight: '100vh',
-        '& .MuiDrawer-paper': {  
-          padding: 20,
-          width: 250, 
-          backgroundColor: style.palette.primary.main,
-        },
-      },
-    }
-  })
-}
+const MentorLayoutComponent = styled('main')(({
+  display: 'flex',
+  padding: 0,
+  minHeight: '100vh !important',
+}));
+
 const MentorLayout = ({children} : any) => {
   const profileSettingsRef = useRef<HTMLDivElement>(null);
   const [openMenu, setOpenMenu] = useState(false);
   const [openNav, setOpenNav] = useState(false);
   const user = useSelector((state: RootStateOrAny) => state.authReducer.user);
-  const theme = useSelector((state: RootStateOrAny) => state.themeReducer);
-  const style = useStyle(theme)();
+  const mode = useSelector((state: RootStateOrAny) => state.themeReducer);
+  const style = theme(mode);
+
+  const drawerStyle = {
+    minHeight: '100vh',
+    '& .MuiDrawer-paper': {  
+      padding: '20px',
+      width:'250px', 
+      backgroundColor: style.palette.primary.main,
+    },
+  }
 
   const toggleMenuSettings = () => {
     setOpenMenu(!openMenu);
   }
 
   return (
-    <Box
-      component="main"
-      className={style.layout}
-    >
+    <MentorLayoutComponent>
       <Drawer
-        className={style.header}
         variant="persistent"
         open={true}
         sx={{
           display: { xs: 'none', md: 'block' },
+          ...drawerStyle,
         }}
       >
         <NavOptions />
       </Drawer>
       <Drawer
-        className={style.header}
         variant="temporary"
         open={openNav}
         onClose={() => setOpenNav(false)}
         sx={{
           display: { xs: 'block', md: 'none' },
+          ...drawerStyle,
         }}
       >
         <NavOptions />
       </Drawer>
-      <div className={style.mainBox}>
+      <div style={{flex: 1}}>
         <AppBar
           position='static'
           color='transparent'
@@ -115,9 +100,7 @@ const MentorLayout = ({children} : any) => {
         </AppBar>
         {children}
       </div>
-      
-      
-    </Box>
+    </MentorLayoutComponent>
   )
 }
 

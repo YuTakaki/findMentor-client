@@ -1,5 +1,5 @@
 import { Button, Card, Container, Typography} from '@mui/material'
-import { makeStyles } from '@mui/styles'
+import { styled } from '@mui/styles'
 import { Form, Formik, FormikHelpers } from 'formik'
 import { NextPage } from 'next'
 import Link from 'next/link'
@@ -9,27 +9,21 @@ import { useDispatch } from 'react-redux'
 import * as yup from 'yup'
 import InputField from '../components/common/Formik/InputField'
 import { registerAction } from '../store/actions/authActions'
+import { changeErrorAction } from '../store/slicers/authSlicers'
 import { registerFormTypes } from '../types/types'
 
-const useStyles = makeStyles((theme) => {
-  return {
-    form : {
-      margin: "auto",
-      padding: 20,
-      display: 'flex',
-      flexDirection: 'column',
-      gridGap: 20,
-      width: '100%',
-      maxWidth: 400,
-    },
-  
-    login : {
-      color: 'blue'
-    }
-  }
+
+const FormContainer = styled('div')({
+  margin: "auto",
+  padding: 20,
+  display: 'flex',
+  flexDirection: 'column',
+  gridGap: 20,
+  width: '100%',
+  maxWidth: 400,
 })
+
 const Register : NextPage = () => {
-  const styles = useStyles();
   const dispatch = useDispatch();
   const router = useRouter();
   const account_type = router.query['account_type'];
@@ -67,6 +61,7 @@ const Register : NextPage = () => {
       if ('error' in register) {
         setErrors(register.payload);
       } else {
+        dispatch(changeErrorAction(0));
         router.push('/profile/info');
       }
     } catch (error) {
@@ -96,38 +91,41 @@ const Register : NextPage = () => {
             sx={{maxWidth: 400, margin: 'auto'}}
             elevation={10}
           >
-            <Form className={styles.form}>
-              <Typography
-                variant='h2'
-                fontSize={20}
-                align='center'
-                mb={1}
-              >
-                Register
-              </Typography>
-              <InputField label="email" name="email"/>
-              <InputField label="username" name="username"/>
-              <InputField label="first name" name="first_name"/>
-              <InputField label="last name" name="last_name"/>
-              <InputField label="password" name="password" type="password"/>
-              <Button
-                variant="contained"
-                type='submit'
-              >
-                Submit
-              </Button>
+            <Form>
+              <FormContainer>
+                <Typography
+                  variant='h2'
+                  fontSize={20}
+                  align='center'
+                  mb={1}
+                >
+                  Register
+                </Typography>
+                <InputField label="email" name="email"/>
+                <InputField label="username" name="username"/>
+                <InputField label="first name" name="first_name"/>
+                <InputField label="last name" name="last_name"/>
+                <InputField label="password" name="password" type="password"/>
+                <Button
+                  variant="contained"
+                  type='submit'
+                >
+                  Submit
+                </Button>
 
-              <hr />
-              <Typography
-                textAlign='center'
-              >
-                Already have an account yet? <Link href={`/login?account_type=${account_type}`}>
-                  <a className={styles.login}>
-                    register
-                  </a>
-                </Link>
-                
-              </Typography>
+                <hr />
+                <Typography
+                  textAlign='center'
+                >
+                  Already have an account yet? <Link href={`/login?account_type=${account_type}`}>
+                    <a style={{color: 'blue'}}>
+                      register
+                    </a>
+                  </Link>
+                  
+                </Typography>
+
+              </FormContainer>
             </Form>
           </Card>
         </Formik>
