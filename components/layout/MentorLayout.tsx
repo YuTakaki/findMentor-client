@@ -15,6 +15,10 @@ const useStyle = (mode : 'light' | 'dark') => {
         display: 'flex',
         padding: 0,
         minHeight: '100vh !important',
+        '&' : {
+          color: 'white'
+
+        }
       },
     
       mainBox: {
@@ -53,7 +57,7 @@ const MentorLayout = ({children} : any) => {
         variant="persistent"
         open={true}
         sx={{
-          display: { xs: 'none', sm: 'block' },
+          display: { xs: 'none', md: 'block' },
         }}
       >
         <NavOptions />
@@ -64,7 +68,7 @@ const MentorLayout = ({children} : any) => {
         open={openNav}
         onClose={() => setOpenNav(false)}
         sx={{
-          display: { xs: 'block', sm: 'none' },
+          display: { xs: 'block', md: 'none' },
         }}
       >
         <NavOptions />

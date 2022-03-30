@@ -40,7 +40,7 @@ const Step1 = ({setActiveStepHandler} : StepPropType) => {
   const styles = useStyle();
   const formikRef = useRef<FormikProps<step1FormType>>(null);
   const dispatch = useDispatch();
-  const [previewImg, setPreviewImg] = useState<null | string>();
+  const [previewImg, setPreviewImg] = useState<null | string>(null);
   const user = useSelector((state: RootStateOrAny) => state.authReducer.user);
   const initialValues : step1FormType= {
     job_position: user.job_position || '',
