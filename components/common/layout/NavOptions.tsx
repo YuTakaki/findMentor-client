@@ -15,6 +15,21 @@ const Nav = styled('nav')({
 const NavOptions = () => {
   const dispatch = useDispatch();
 
+  const options = [
+    {
+      name: 'Dashboard',
+      link: ''
+    },
+    {
+      name: 'Profile',
+      link: ''
+    },
+    {
+      name: 'Calender',
+      link: ''
+    },
+  ]
+
   return (
     <>
       <Typography
@@ -28,18 +43,16 @@ const NavOptions = () => {
         Find Mentor
       </Typography>
       <Nav>
-        <Typography sx={{
-          color: 'white'
-        }}>Page</Typography>
-        <Typography sx={{
-          color: 'white'
-        }}>Page</Typography>
-        <Typography sx={{
-          color: 'white'
-        }}>Page</Typography>
-        <Typography sx={{
-          color: 'white'
-        }}>Page</Typography>
+        {options.map(_option => (
+          <Typography 
+            key={_option.name} 
+            sx={{
+              color: 'white',
+              marginTop: '20px'
+            }}
+          >{_option.name}</Typography>
+
+        ))}
       </Nav>
       <Button 
         variant='contained' 

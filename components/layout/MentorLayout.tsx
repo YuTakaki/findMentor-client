@@ -1,4 +1,4 @@
-import { AppBar, Avatar, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography, Drawer } from '@mui/material'
+import { AppBar, Avatar, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography, Drawer, Box } from '@mui/material'
 import { styled } from '@mui/styles'
 import MenuIcon from '@mui/icons-material/Menu';
 import React, { useRef, useState } from 'react'
@@ -58,17 +58,28 @@ const MentorLayout = ({children} : any) => {
       >
         <NavOptions />
       </Drawer>
+      <Box sx={{
+        display: {xs : 'none', md: 'block'},
+        width: '250px',
+      }}>
+      </Box>
       <div style={{flex: 1}}>
         <AppBar
           position='static'
           color='transparent'
-          elevation={1}
+          elevation={0}
           sx={{
             display: 'flex',
             flexDirection: 'row',
           }}
         >
-          <IconButton sx={{ p: 1 }} onClick={() => setOpenNav(true)}>
+          <IconButton
+            onClick={() => setOpenNav(true)}
+            sx={{
+              display: {xs : 'block', md: 'none'},
+              padding: 1
+            }}
+          >
             <MenuIcon />
           </IconButton>
           <Toolbar 
