@@ -14,6 +14,16 @@ const MentorLayoutComponent = styled('main')(({
   minHeight: '100vh !important',
 }));
 
+const CustomDrawer = styled(Drawer)(({theme} : any) => ({
+  minHeight: '100vh',
+  '& .MuiDrawer-paper': {  
+    padding: '20px',
+    width:'250px', 
+    backgroundColor: theme.palette.primary.main,
+
+  },
+}))
+
 const MentorLayout = ({children} : any) => {
   const profileSettingsRef = useRef<HTMLDivElement>(null);
   const [openMenu, setOpenMenu] = useState(false);
@@ -22,14 +32,6 @@ const MentorLayout = ({children} : any) => {
   const mode = useSelector((state: RootStateOrAny) => state.themeReducer);
   const style = theme(mode);
 
-  const drawerStyle = {
-    minHeight: '100vh',
-    '& .MuiDrawer-paper': {  
-      padding: '20px',
-      width:'250px', 
-      backgroundColor: style.palette.primary.main,
-    },
-  }
 
   const toggleMenuSettings = () => {
     setOpenMenu(!openMenu);
@@ -37,27 +39,27 @@ const MentorLayout = ({children} : any) => {
 
   return (
     <MentorLayoutComponent>
-      <Drawer
+      <CustomDrawer
         variant="persistent"
         open={true}
+        theme={style}
         sx={{
           display: { xs: 'none', md: 'block' },
-          ...drawerStyle,
         }}
       >
         <NavOptions />
-      </Drawer>
-      <Drawer
+      </CustomDrawer>
+      <CustomDrawer
         variant="temporary"
         open={openNav}
         onClose={() => setOpenNav(false)}
+        theme={style}
         sx={{
           display: { xs: 'block', md: 'none' },
-          ...drawerStyle,
         }}
       >
         <NavOptions />
-      </Drawer>
+      </CustomDrawer>
       <Box sx={{
         display: {xs : 'none', md: 'block'},
         width: '250px',

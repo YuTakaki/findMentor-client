@@ -20,8 +20,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Box
         id='root'
         sx={{
-          height: '100vh',
-          width: '100%',
+          minHeight: '100vh',
+          minWidth: '100%',
           bgcolor: 'background.default'
         }}
       >
