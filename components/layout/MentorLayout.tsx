@@ -17,7 +17,8 @@ const MentorLayoutComponent = styled('main')(({
 const CustomDrawer = styled(Drawer)(({theme} : any) => ({
   minHeight: '100vh',
   '& .MuiDrawer-paper': {  
-    padding: '20px',
+    paddingTop: '20px',
+    paddingBottom: '20px',
     width:'250px', 
     backgroundColor: theme.palette.primary.main,
 

@@ -58,7 +58,7 @@ const Index = () => {
                   maxWidth: '400px',
                   '& .MuiCalendarPicker-root' : {
                   width : 'max-content'
-                  }}}
+                }}}
                 elevation={0}
               >
                 <LocalizationProvider
