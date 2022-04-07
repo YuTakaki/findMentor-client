@@ -47,26 +47,26 @@ const NavOptions = () => {
       <Nav>
         <List>
           {options.map(_option => (
-            <ListItem 
-              button 
-              key={_option.name}
-              sx={{
-                '& .MuiListItemIcon-root': {
-                  alignItems: 'center',
-                  gridGap: 10,
-                  color: 'white'
-                }
-              }}
-            >
-              <Link href={`/mentor/${_option.link}`}>
-                <a>
-                  <ListItemIcon>
-                    {_option.icon}
-                  <ListItemText>{_option.name}</ListItemText>
-                  </ListItemIcon>
-                </a>
-              </Link>
-            </ListItem>
+            <Link href={`/mentor/${_option.link}`} key={_option.name}>
+              <a>
+                <ListItem 
+                  button 
+                  sx={{
+                    '& .MuiListItemIcon-root': {
+                      alignItems: 'center',
+                      gridGap: 10,
+                      color: 'white'
+                    }
+                  }}
+                >
+
+                <ListItemIcon>
+                  {_option.icon}
+                <ListItemText>{_option.name}</ListItemText>
+                </ListItemIcon>
+                </ListItem>
+              </a>
+            </Link>
 
           ))}
         </List>

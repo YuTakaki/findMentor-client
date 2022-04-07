@@ -66,7 +66,7 @@ const MentorLayout = ({children} : any) => {
         width: '250px',
       }}>
       </Box>
-      <div style={{flex: 1}}>
+      <div style={{flex: 1, display: 'flex', flexDirection: 'column', height: '100vh'}}>
         <AppBar
           position='static'
           color='transparent'
