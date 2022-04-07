@@ -8,19 +8,23 @@ import { RootStateOrAny, useDispatch, useSelector } from 'react-redux'
 import { addAdditionalInfoAction } from '../../store/actions/authActions'
 import { useRouter } from 'next/router'
 import { changeErrorAction } from '../../store/slicers/authSlicers'
+import SelectField from '../common/Formik/SelectField'
 
 type payRateType = {
-  pay_rate: number | ''
+  pay_rate: number | '',
 }
+
+const duration_choices = [30, 60, 90, 120, 150, 180];
+
 const Step3 = ({setActiveStepHandler} : StepPropType) => {
   const user = useSelector((state: RootStateOrAny) => state.authReducer.user);
   const dispatch = useDispatch();
   const router = useRouter();
   const initialValues : payRateType= {
-    pay_rate: user.pay_rate || ''
+    pay_rate: user.pay_rate || '',
   }
   const validationSchema = yup.object({
-    pay_rate : yup.number().required().min(1)
+    pay_rate : yup.number().required().min(1),
   })
 
   const submitHandler = async(values: payRateType) => {

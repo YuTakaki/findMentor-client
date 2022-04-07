@@ -22,7 +22,8 @@ function MyApp({ Component, pageProps }: AppProps) {
         sx={{
           minHeight: '100vh',
           minWidth: '100%',
-          bgcolor: 'background.default'
+          bgcolor: 'background.default',
+          boxSizing: 'border-box'
         }}
       >
         <Component {...pageProps}/>
