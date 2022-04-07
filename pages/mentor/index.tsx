@@ -106,7 +106,7 @@ const Index = () => {
                 ))}
                 </List>
               </CustomCard>
-              <CustomCard sx={{height: '100%', flex: 1, minWidth: 200}} elevation={1}>
+              <CustomCard sx={{height: '100%', flex: 1, minWidth: 300}} elevation={1}>
                 <Typography textAlign='center'>Today&apos; lesson</Typography>
                 <List
                   sx={{

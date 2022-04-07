@@ -21,7 +21,7 @@ const calendar = () => {
   ];
   return (
     <MentorLayout>
-      <Paper sx={{flex: 1, overflow: 'auto'}}>
+      <Paper>
         <Scheduler
           data={schedulerData}
         >
