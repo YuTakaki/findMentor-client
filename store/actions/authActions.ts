@@ -49,6 +49,21 @@ export const verifyTokenAction = createAsyncThunk(
   }
 )
 
+export const logoutAction = createAsyncThunk(
+  'auth/logoutAction',
+  async (_, { rejectWithValue }) => {
+    try {
+      await axios.post(`${NEXT_PUBLIC_SERVER}/api/auth/logout`);
+      return;
+    } catch (error) {
+      if (axios.isAxiosError(error)){
+        console.log(error.response!.data)
+        return rejectWithValue(error.response!.data);
+      }
+    }
+  }
+)
+
 export const addAdditionalInfoAction = createAsyncThunk(
   'auth/addAdditionalInfoAction',
   async (data : step1FormType | { pay_rate : number | '' }) => {

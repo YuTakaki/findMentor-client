@@ -2,10 +2,12 @@ import { AppBar, Avatar, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typograph
 import { styled } from '@mui/styles'
 import MenuIcon from '@mui/icons-material/Menu';
 import React, { useRef, useState } from 'react'
-import { RootStateOrAny, useSelector } from 'react-redux'
+import { RootStateOrAny, useDispatch, useSelector } from 'react-redux'
 import { getImageUrl } from '../../utils/getImageUrl'
 import theme from '../../styles/theme/theme'
 import NavOptions from '../common/layout/NavOptions'
+import { logoutAction } from '../../store/actions/authActions';
+import { useRouter } from 'next/router';
 
 
 const MentorLayoutComponent = styled('main')(({
@@ -32,10 +34,21 @@ const MentorLayout = ({children} : any) => {
   const user = useSelector((state: RootStateOrAny) => state.authReducer.user);
   const mode = useSelector((state: RootStateOrAny) => state.themeReducer);
   const style = theme(mode);
-
+  const dispatch = useDispatch();
+  const router = useRouter()
 
   const toggleMenuSettings = () => {
     setOpenMenu(!openMenu);
+  }
+
+  const logout = async() => {
+    try {
+      await dispatch(logoutAction());
+      router.push('/');
+
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -105,11 +118,9 @@ const MentorLayout = ({children} : any) => {
               keepMounted
               onClose={toggleMenuSettings}
             >
-              {[1,2,3,4].map((_, i) => (
-                <MenuItem key={i}>
-                  <Typography>{i}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={logout}>
+                <Typography>Log Out</Typography>
+              </MenuItem>
             </Menu>
           </Toolbar>
         </AppBar>

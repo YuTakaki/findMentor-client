@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { authResponseType, authSlicerStateType, userType } from "../../types/types";
-import { addAdditionalInfoAction, loginAction, registerAction, verifyTokenAction } from "../actions/authActions";
+import { addAdditionalInfoAction, loginAction, logoutAction, registerAction, verifyTokenAction } from "../actions/authActions";
 
 const initialState : authSlicerStateType = {
   loading: false,
@@ -59,6 +59,16 @@ const authSlicers = createSlice({
         profile_img: `${process.env.NEXT_PUBLIC_SERVER}${action.payload.profile_img}`
       }
     });
+
+    builder.addCase(logoutAction.pending, authPendingBuilder);
+    builder.addCase(logoutAction.fulfilled, () => {
+      return {
+        loading: false,
+        user: {},
+        is_auth: false,
+        error: null,
+      }
+    })
   }
 });
 

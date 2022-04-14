@@ -20,6 +20,7 @@ import { EditRecurrenceMenu } from '@devexpress/dx-react-scheduler-material-ui';
 import { FormControl, InputLabel, Menu, MenuItem, Select, Snackbar } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import axios from 'axios';
+import PrivateRoute from '../../components/hoc/PrivateRoute';
 
 type schedulesType = {
   id: number,
@@ -143,4 +144,4 @@ const Calendar = () => {
   )
 }
 
-export default Calendar
+export default PrivateRoute(Calendar);
