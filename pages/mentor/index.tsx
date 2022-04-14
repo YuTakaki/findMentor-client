@@ -73,6 +73,7 @@ const Index = () => {
             <Stack
               direction='row'
               justifyContent='center'
+              alignItems='center'
               sx={{
                 width: '100%',
                 gap: 3
@@ -139,7 +140,7 @@ const Index = () => {
                 </List>
                 
               </CustomCard>
-              <CustomCard 
+              {/* <CustomCard 
                 sx={{
                   maxHeight: 'max-content !important',
                   maxWidth: '400px',
@@ -153,7 +154,7 @@ const Index = () => {
                 >
                   <CalendarPicker date={new Date()} onChange={(newDate) => console.log(newDate)} />
                 </LocalizationProvider>
-              </CustomCard>
+              </CustomCard> */}
             </Stack>
           </Grid>
         </Grid>
