@@ -61,8 +61,12 @@ const Register : NextPage = () => {
       if ('error' in register) {
         setErrors(register.payload);
       } else {
-        dispatch(changeErrorAction(0));
-        router.push('/profile/info');
+        if (account_type === 'mentor') {
+          dispatch(changeErrorAction(0));
+          router.push('/profile/info');
+        } else {
+          router.push(`/${account_type}`);
+        }
       }
     } catch (error) {
       console.log(error);

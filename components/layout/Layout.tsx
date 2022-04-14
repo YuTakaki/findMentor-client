@@ -8,9 +8,10 @@ import theme from '../../styles/theme/theme'
 import NavOptions from '../common/layout/NavOptions'
 import { logoutAction } from '../../store/actions/authActions';
 import { useRouter } from 'next/router';
+import PrivateRoute from '../hoc/PrivateRoute';
 
 
-const MentorLayoutComponent = styled('main')(({
+const LayoutComponent = styled('main')(({
   display: 'flex',
   padding: 0,
   minHeight: '100vh !important',
@@ -27,7 +28,7 @@ const CustomDrawer = styled(Drawer)(({theme} : any) => ({
   },
 }))
 
-const MentorLayout = ({children} : any) => {
+const Layout = ({children} : any) => {
   const profileSettingsRef = useRef<HTMLDivElement>(null);
   const [openMenu, setOpenMenu] = useState(false);
   const [openNav, setOpenNav] = useState(false);
@@ -52,7 +53,7 @@ const MentorLayout = ({children} : any) => {
   }
 
   return (
-    <MentorLayoutComponent>
+    <LayoutComponent>
       <CustomDrawer
         variant="persistent"
         open={true}
@@ -126,8 +127,8 @@ const MentorLayout = ({children} : any) => {
         </AppBar>
         {children}
       </div>
-    </MentorLayoutComponent>
+    </LayoutComponent>
   )
 }
 
-export default MentorLayout
+export default PrivateRoute(Layout)

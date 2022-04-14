@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import MentorLayout from '../../components/layout/MentorLayout'
 import Paper from '@mui/material/Paper';
 import { EditingState, IntegratedEditing, ViewState } from '@devexpress/dx-react-scheduler';
 import {
@@ -20,7 +19,7 @@ import { EditRecurrenceMenu } from '@devexpress/dx-react-scheduler-material-ui';
 import { FormControl, InputLabel, Menu, MenuItem, Select, Snackbar } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import axios from 'axios';
-import PrivateRoute from '../../components/hoc/PrivateRoute';
+import Layout from '../../components/layout/Layout';
 
 type schedulesType = {
   id: number,
@@ -35,24 +34,27 @@ type schedulesType = {
 const Calendar = () => {
   const currentDate = new Date();
   const [schedules, setSchedules] = useState<schedulesType[]>([]);
+  const [firstLoader, setFirstLoader] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
   const [category, setCategory] = useState('Schedule');
 
   useEffect(() => {
     (async() => {
+      setFirstLoader(true);
       try {
         const user_schedules = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/api/mentor/schedule`, {withCredentials: true});
         setSchedules(user_schedules.data);
       } catch (error) {
         console.log(error);
       }
+      setFirstLoader(false);
     })();
 
   }, []);
 
   useEffect(() => {
-    axios.post(`${process.env.NEXT_PUBLIC_SERVER}/api/mentor/schedule`,schedules, {withCredentials: true});
-  }, [schedules]);
+    if (!firstLoader) axios.post(`${process.env.NEXT_PUBLIC_SERVER}/api/mentor/schedule`,schedules, {withCredentials: true});
+  }, [schedules, firstLoader]);
 
   const handleClose = () => {
     setAlertOpen(false);
@@ -82,7 +84,7 @@ const Calendar = () => {
 
   
   return (
-    <MentorLayout>
+    <Layout>
       <Snackbar
         open={alertOpen}
         autoHideDuration={3000}
@@ -140,8 +142,8 @@ const Calendar = () => {
           <DragDropProvider />
         </Scheduler>
       </Paper>
-    </MentorLayout>
+    </Layout>
   )
 }
 
-export default PrivateRoute(Calendar);
+export default Calendar;

@@ -1,11 +1,8 @@
-import { Avatar, Box, Button, Card, Container, Grid, List, ListItem, ListItemAvatar, ListItemText, Stack, Typography } from '@mui/material'
-import PrivateRoute from '../../components/hoc/PrivateRoute'
-import MentorLayout from '../../components/layout/MentorLayout'
-import { CalendarPicker, LocalizationProvider } from '@mui/lab';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import { Avatar, Button, Card, Container, Grid, List, ListItem, ListItemAvatar, ListItemText, Stack, Typography } from '@mui/material'
 import styled from '@emotion/styled'
 import { RootStateOrAny, useSelector } from 'react-redux';
 import theme from '../../styles/theme/theme';
+import Layout from '../../components/layout/Layout';
 
 const CustomCard = styled(Card)(({
   padding: 10,
@@ -19,7 +16,7 @@ const Index = () => {
   const mode = useSelector((state : RootStateOrAny) => state.themeReducer);
   const style = theme(mode);
   return (
-    <MentorLayout>
+    <Layout>
       <Container>
         <Grid
           container
@@ -140,27 +137,12 @@ const Index = () => {
                 </List>
                 
               </CustomCard>
-              {/* <CustomCard 
-                sx={{
-                  maxHeight: 'max-content !important',
-                  maxWidth: '400px',
-                  '& .MuiCalendarPicker-root' : {
-                  width : 'max-content'
-                }}}
-                elevation={0}
-              >
-                <LocalizationProvider
-                  dateAdapter={AdapterDateFns}
-                >
-                  <CalendarPicker date={new Date()} onChange={(newDate) => console.log(newDate)} />
-                </LocalizationProvider>
-              </CustomCard> */}
             </Stack>
           </Grid>
         </Grid>
       </Container>
-    </MentorLayout>
+    </Layout>
   )
 }
 
-export default PrivateRoute(Index);
+export default Index;
