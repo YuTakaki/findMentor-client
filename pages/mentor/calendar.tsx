@@ -16,18 +16,20 @@ import {
   AppointmentTooltip,
   ConfirmationDialog
 } from '@devexpress/dx-react-scheduler-material-ui';
+import { EditRecurrenceMenu } from '@devexpress/dx-react-scheduler-material-ui';
 import { FormControl, InputLabel, Menu, MenuItem, Select, Snackbar } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import axios from 'axios';
 
 type schedulesType = {
   id: number,
-  startDate: Date,
-  endDate: Date,
+  startDate: Date | string,
+  endDate: Date | string,
   title: string,
   note: string,
   rRule: string
 }
+
 
 const Calendar = () => {
   const currentDate = new Date();
@@ -47,33 +49,31 @@ const Calendar = () => {
 
   }, []);
 
+  useEffect(() => {
+    axios.post(`${process.env.NEXT_PUBLIC_SERVER}/api/mentor/schedule`,schedules, {withCredentials: true});
+  }, [schedules]);
+
   const handleClose = () => {
     setAlertOpen(false);
   }
 
-  const onCommitChanges = async({ added, changed, deleted }: any) => {
+  const onCommitChanges = async(props: any) => {
     try {
+      const {added, changed, deleted} = props
+
       if (added) {
-        if (!schedules.some((sched: schedulesType) => sched.startDate >= added.startDate && sched.endDate <= added.endDate)) {
-          const request_data = await axios.post(`${process.env.NEXT_PUBLIC_SERVER}/api/mentor/schedule`, added, {withCredentials: true});
-          setSchedules([...schedules, request_data.data]);
-          console.log([...schedules, request_data.data]);
-        }else{
-          setAlertOpen(true);
-        }
+        const startingAddedId = schedules.length > 0 ? schedules[schedules.length - 1].id + 1 : 0;
+        setSchedules([...schedules, { id: startingAddedId, ...added }]);
       }
       if (changed) {
-        if (!schedules.some((sched: schedulesType) => sched.startDate >= added.startDate && sched.endDate <= added.endDate)) {
-          setSchedules(schedules.map(appointment => (
-            changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment)));
-        }else{
-          setAlertOpen(true);
-        }
+        setSchedules(schedules.map(appointment => (
+          changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment)));
       }
       if (deleted !== undefined) {
         setSchedules(schedules.filter(appointment => appointment.id !== deleted));
       }
     } catch (error:any) {
+      console.log(error)
       console.log(error.response);
     }
   };
@@ -106,9 +106,6 @@ const Calendar = () => {
         <Scheduler
           data={schedules}
         >
-          <EditingState
-            onCommitChanges={onCommitChanges}
-          />
           <ViewState
             defaultCurrentDate={currentDate}
             defaultCurrentViewName="Week"
@@ -123,10 +120,16 @@ const Calendar = () => {
           />
           <MonthView />
           <Toolbar />
-          <IntegratedEditing />
           <ViewSwitcher />
           <DateNavigator />
-          <Appointments />
+          <Appointments 
+            
+          />
+          <EditingState
+            onCommitChanges={onCommitChanges}
+          />
+          <EditRecurrenceMenu />
+          <IntegratedEditing />
           <AppointmentTooltip
             showOpenButton
             showDeleteButton
