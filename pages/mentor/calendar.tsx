@@ -34,47 +34,53 @@ type schedulesType = {
 const Calendar = () => {
   const currentDate = new Date();
   const [schedules, setSchedules] = useState<schedulesType[]>([]);
-  const [firstLoader, setFirstLoader] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
   const [category, setCategory] = useState('Schedule');
 
   useEffect(() => {
     (async() => {
-      setFirstLoader(true);
       try {
         const user_schedules = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/api/mentor/schedule`, {withCredentials: true});
         setSchedules(user_schedules.data);
       } catch (error) {
         console.log(error);
       }
-      setFirstLoader(false);
     })();
 
   }, []);
 
   useEffect(() => {
-    if (!firstLoader) axios.post(`${process.env.NEXT_PUBLIC_SERVER}/api/mentor/schedule`,schedules, {withCredentials: true});
-  }, [schedules, firstLoader]);
+    console.log(schedules);
+  }, [schedules]);
 
   const handleClose = () => {
     setAlertOpen(false);
   }
 
+  
+
   const onCommitChanges = async(props: any) => {
     try {
-      const {added, changed, deleted} = props
+      const {added, changed, deleted} = props;
+      let data;
 
       if (added) {
         const startingAddedId = schedules.length > 0 ? schedules[schedules.length - 1].id + 1 : 0;
-        setSchedules([...schedules, { id: startingAddedId, ...added }]);
+        data = [...schedules, { id: startingAddedId, ...added }]
+        setSchedules(data);
       }
       if (changed) {
-        setSchedules(schedules.map(appointment => (
-          changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment)));
+        data = schedules.map(appointment => (
+          changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment))
+        setSchedules(data);
       }
       if (deleted !== undefined) {
-        setSchedules(schedules.filter(appointment => appointment.id !== deleted));
+        data = schedules.filter(appointment => appointment.id !== deleted)
+        setSchedules(data);
       }
+      // axios.post(`${process.env.NEXT_PUBLIC_SERVER}/api/mentor/schedule`, data, {withCredentials: true})
+      // .catch(e => console.log(e));
+
     } catch (error:any) {
       console.log(error)
       console.log(error.response);

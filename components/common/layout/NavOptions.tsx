@@ -2,10 +2,11 @@ import { Button, List, ListItem, ListItemIcon, ListItemText, Typography } from '
 import { styled } from '@mui/system';
 import Link from 'next/link';
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { RootStateOrAny, useDispatch, useSelector } from 'react-redux'
 import { changeThemeAction } from '../../../store/slicers/themeSlicers';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 
 const Nav = styled('nav')({
   marginTop: 20,
@@ -18,18 +19,28 @@ const Nav = styled('nav')({
 
 const NavOptions = () => {
   const dispatch = useDispatch();
+  const accountType = useSelector((state: RootStateOrAny) => state.authReducer.user.account_type)
 
   const options = [
     {
       name: 'Dashboard',
       link: '',
-      icon: <DashboardIcon />
+      icon: <DashboardIcon />,
+      account: 'both'
     },
     {
       name: 'Calender',
       link: 'calendar',
-      icon: <CalendarMonthIcon />
+      icon: <CalendarMonthIcon />,
+      account: 'both'
     },
+    {
+      name: 'Find Mentor',
+      link: 'find-mentor',
+      icon: <PersonSearchIcon />,
+      account: 'student'
+    },
+    
   ]
 
   return (
@@ -47,26 +58,30 @@ const NavOptions = () => {
       <Nav>
         <List>
           {options.map(_option => (
-            <Link href={`/mentor/${_option.link}`} key={_option.name}>
-              <a>
-                <ListItem 
-                  button 
-                  sx={{
-                    '& .MuiListItemIcon-root': {
-                      alignItems: 'center',
-                      gridGap: 10,
-                      color: 'white'
-                    }
-                  }}
-                >
-
-                <ListItemIcon>
-                  {_option.icon}
-                <ListItemText>{_option.name}</ListItemText>
-                </ListItemIcon>
-                </ListItem>
-              </a>
-            </Link>
+            <>
+              {(_option.account === 'both' || _option.account === accountType) && (
+                <Link href={`/${accountType}/${_option.link}`} key={_option.name}>
+                  <a>
+                    <ListItem 
+                      button 
+                      sx={{
+                        '& .MuiListItemIcon-root': {
+                          alignItems: 'center',
+                          gridGap: 10,
+                          color: 'white'
+                        }
+                      }}
+                    >
+    
+                    <ListItemIcon>
+                      {_option.icon}
+                    <ListItemText>{_option.name}</ListItemText>
+                    </ListItemIcon>
+                    </ListItem>
+                  </a>
+                </Link>
+              )}
+            </>
 
           ))}
         </List>
