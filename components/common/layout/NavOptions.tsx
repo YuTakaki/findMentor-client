@@ -72,7 +72,6 @@ const NavOptions = () => {
                         }
                       }}
                     >
-    
                     <ListItemIcon>
                       {_option.icon}
                     <ListItemText>{_option.name}</ListItemText>
