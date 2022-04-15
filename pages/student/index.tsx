@@ -5,6 +5,7 @@ import theme from '../../styles/theme/theme';
 import Layout from '../../components/layout/Layout';
 import { CalendarPicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import MentorCard from '../../components/student/MentorCard';
 
 const CustomCard = styled(Card)(({
   padding: 10,
@@ -13,12 +14,6 @@ const CustomCard = styled(Card)(({
   display: 'flex',
   flexDirection: 'column',
 }));
-
-const CustomList = styled(List)(({
-  display: 'flex',
-  justifyContent: 'center',
-  flexWrap: 'wrap'
-}))
 
 const StudentDashboard = () => {
   const mode = useSelector((state : RootStateOrAny) => state.themeReducer);
@@ -77,31 +72,10 @@ const StudentDashboard = () => {
 
           <Grid item xs={12}>
             <Typography variant='h4' fontWeight={700} color='primary'>Previous Mentors</Typography>
-            <Grid container spacing={3}>
+            <Grid container spacing={3} sx={{paddingTop: 3}}>
               {[1,2,3,4,5,6].map((i) => (
-                <Grid item key={i} xs={12} sm={6} md={4}>
-                  <CustomCard>
-                    <Avatar
-                      sx={{
-                        margin: 'auto',
-                        width: '70px',
-                        height: '70px'
-                      }}
-                    ></Avatar>
-                    <Typography
-                      textAlign='center'
-                      variant='h5'
-                    >Yu Takaki</Typography>
-                    <CustomList>
-                      <ListItem sx={{textAlign: 'center', width: 'max-content'}}>Javascript</ListItem>
-                      <ListItem sx={{textAlign: 'center', width: 'max-content'}}>Javascript</ListItem>
-                      <ListItem sx={{textAlign: 'center', width: 'max-content'}}>Javascript</ListItem>
-                      <ListItem sx={{textAlign: 'center', width: 'max-content'}}>Javascript</ListItem>
-                      <ListItem sx={{textAlign: 'center', width: 'max-content'}}>Javascript</ListItem>
-                    </CustomList>
-                  </CustomCard>
-                  
-
+                <Grid item key={i} xs={12} sm={4} md={3}>
+                  <MentorCard />
                 </Grid>
               ))}
 
