@@ -1,12 +1,32 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Layout from '../../components/layout/Layout'
-import { Box, Button, ButtonGroup, Container, Grid, Stack, TextField, Typography,} from '@mui/material'
+import { Box, Button, Container, Fab, Grid, IconButton, Modal, Stack, TextField, Typography, Card} from '@mui/material'
 import MentorCard from '../../components/student/MentorCard';
-import styled from '@emotion/styled';
+import Link from 'next/link';
+import FilterOptions from '../../components/student/FilterOptions';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import CloseIcon from '@mui/icons-material/Close';
+import { styled } from '@mui/styles';
 
 const filterContainerWidth = 300;
 
+const CustomBox = styled(Box)(({
+  position: 'fixed',
+  maxHeight: '90vh',
+  padding: 2,
+  paddingTop: 4,
+  paddingLeft: 0,
+  overflow: 'auto',
+  display: 'flex',
+  flexDirection: 'column',
+  gridGap: '10px'
+}))
 const FindMentor = () => {
+  const [openModal, setOpenModal] = useState(false);
+
+  const closeModal = () => {
+    setOpenModal(false);
+  }
   return (
     <Layout>
       <Container>
@@ -21,10 +41,32 @@ const FindMentor = () => {
               }
             }}
           >
+              <Box
+                sx={{
+                  padding: 4
+                }}
+              >
+                <form>
+                  <TextField 
+                    fullWidth
+                    label='search'
+                  />
+                  <Button
+                    type='submit'
+                    variant='contained'
+                    color='secondary'
+                    fullWidth
+                    sx={{
+                      marginTop: 1
+                    }}
+                  >Search</Button>
+                </form>
+              </Box>
             <Grid
               container
               sx={{
                 padding: 4,
+                paddingTop: 0
               }}
               spacing={3}
             >
@@ -36,7 +78,11 @@ const FindMentor = () => {
                   sm={6}
                   xs={12}
                 >
-                  <MentorCard/>
+                  <Link href='/s'>
+                    <a>
+                      <MentorCard/>
+                    </a>
+                  </Link>
                 </Grid>
               ))}
 
@@ -49,63 +95,61 @@ const FindMentor = () => {
                 xs : 'none',
                 md : 'block'
               },
-              overflow: 'auto'
             }}
           >
-            <Box
-              sx={{
-                position: 'fixed',
-                width: filterContainerWidth,
-                maxHeight: '90vh',
-                padding: 2,
-                paddingTop: 4,
-                paddingLeft: 0,
-                overflow: 'auto',
-                display: 'flex',
-                flexDirection: 'column',
-                gridGap: '10px'
-              }}
-            >
-              <form>
-                <TextField 
-                  fullWidth
-                  label='search'
-                />
-                <Button
-                  type='submit'
-                  variant='contained'
-                  color='secondary'
-                  fullWidth
-                  sx={{
-                    marginTop: 1
-                  }}
-                >Search</Button>
-              </form>
-              <Box sx={{marginTop: 2}}>
-                <Typography variant='body1'>Skills</Typography>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    gridGap: '10px',
-                    flexWrap: 'wrap',
-                  }}
-                >
-                  {['java', 'javascript', 'python', 'react', 'css', 'html', 'ruby', 'python', 'django'].map(_skill => (
-                    <Button key={_skill} variant='contained'>{_skill}</Button>
-                  ))}
-                </Box>
-              </Box>
-              <Box>
-                <Typography variant='body1'>Salary</Typography>
-                <Stack spacing={2} direction='row'>
-                  <TextField type='number' label='min' />
-                  <TextField type='number' label='max' />
-                </Stack>
-              </Box>
-            </Box>
+            <CustomBox sx={{width: filterContainerWidth}}>
+              <FilterOptions/>
+            </CustomBox>
 
           </Box>
         </Stack>
+        <Box sx={{
+          position: 'fixed',
+          bottom: '40px',
+          right: '40px',
+          display: {
+            xs: 'block',
+            md: 'none'
+          }
+        }}>
+          <Fab color="primary" onClick={() => setOpenModal(true)}>
+            <FilterAltIcon  />
+          </Fab>
+        </Box>
+        <Modal
+          open={openModal}
+          onClose={closeModal}
+          sx={{
+            display: {
+              xs: 'block',
+              md: 'none'
+            }
+          }}
+        >
+          <Card
+            sx={{
+              width: '90%',
+              height: '80vh',
+              overflow: 'auto',
+              maxWidth: '400px',
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              backgroundColor: 'white',
+              minHeight: '10px',
+              padding: 3
+            }}
+          >
+            <Box sx={{marginLeft: 'auto', width: 'max-content'}}>
+              <IconButton onClick={closeModal} >
+                <CloseIcon fontSize='large'/>
+              </IconButton>
+
+            </Box>
+            <FilterOptions />
+          </Card>
+        </Modal>
       </Container>
     </Layout>
   )
