@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from '../../components/layout/Layout'
 import { Box, Button, Container, Fab, Grid, IconButton, Modal, Stack, TextField, Typography, Card} from '@mui/material'
 import MentorCard from '../../components/student/MentorCard';
@@ -30,11 +30,28 @@ type FindMentorProps = {
 const FindMentor = ({mentors_data} : FindMentorProps) => {
   const [openModal, setOpenModal] = useState(false);
   const [mentors, setMentors] = useState(mentors_data || []);
-  const [skills, setSkills] = useState([]);
+  const [filterOptions, setFilterOptions] = useState({
+    skills : [],
+    min_pay_rate : '',
+    max_pay_rate : '',
+  });
 
   const closeModal = () => {
     setOpenModal(false);
   }
+
+  useEffect(() => {
+    if(mentors_data !== undefined){
+      (async() => {
+        try {
+          const filterMentor = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/api/mentor/filter?skills=${filterOptions.skills}&min=${filterOptions.min_pay_rate}&max=${filterOptions.max_pay_rate}`, {withCredentials: true});
+          setMentors(filterMentor.data.mentors); 
+        } catch (error) {
+          console.log(error);
+        }
+      })();
+    }
+  }, [filterOptions, mentors_data]);
   return (
     <Layout>
       <Container>
@@ -106,7 +123,7 @@ const FindMentor = ({mentors_data} : FindMentorProps) => {
             }}
           >
             <CustomBox sx={{width: filterContainerWidth}}>
-              <FilterOptions skills={skills} setSkills={setSkills}/>
+              <FilterOptions filterOptions={filterOptions} setFilterOptions={setFilterOptions}/>
             </CustomBox>
 
           </Box>
@@ -155,7 +172,7 @@ const FindMentor = ({mentors_data} : FindMentorProps) => {
               </IconButton>
 
             </Box>
-            <FilterOptions skills={skills} setSkills={setSkills}/>
+            <FilterOptions filterOptions={filterOptions} setFilterOptions={setFilterOptions}/>
           </Card>
         </Modal>
       </Container>

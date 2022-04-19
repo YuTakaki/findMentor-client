@@ -1,24 +1,38 @@
 import { Box, Button, Stack, TextField, Typography } from '@mui/material'
 import React from 'react'
 
-interface FilterOptionsProps {
+type filterOptionsType = {
   skills : string[],
-  setSkills : Function
+  min_pay_rate: string | number,
+  max_pay_rate: string | number,
+}
+interface FilterOptionsProps {
+  filterOptions : filterOptionsType,
+  setFilterOptions : Function
 }
 
 const FilterOptions = ({
-  skills,
-  setSkills,
+  filterOptions,
+  setFilterOptions,
 } : FilterOptionsProps) => {
-  const skillsOption = ['java', 'javascript', 'python', 'react', 'css', 'html', 'ruby', 'python', 'django'];
+
+  const skillsOption = ['java', 'javascript', 'python', 'react', 'css', 'html', 'ruby', 'django'];
+
   const handleFilterSkills = (value: string) => {
     let data;
-    if (skills.includes(value)) {
-      data = skills.filter(_skill => _skill !== value);
+    if (filterOptions.skills.includes(value)) {
+      data = filterOptions.skills.filter(_skill => _skill !== value);
     } else {
-      data = [...skills, value];
+      data = [...filterOptions.skills, value];
     }
-    setSkills(data);
+    setFilterOptions({
+      ...filterOptions,
+      skills : data
+    });
+  };
+
+  const reset = () => {
+    setFilterOptions([]);
   }
 
   return (
@@ -35,7 +49,7 @@ const FilterOptions = ({
           {skillsOption.map(_skill => (
             <Button 
               key={_skill}
-              variant={skills.includes(_skill) ? 'contained' : 'outlined'}
+              variant={filterOptions.skills.includes(_skill) ? 'contained' : 'outlined'}
               onClick={() => handleFilterSkills(_skill)}
             >{_skill}</Button>
           ))}
@@ -44,10 +58,21 @@ const FilterOptions = ({
       <Box>
         <Typography variant='body1'>Salary</Typography>
         <Stack spacing={2} direction='row'>
-          <TextField type='number' label='min' />
-          <TextField type='number' label='max' />
+          <TextField 
+            type='number' 
+            label='min'
+            value={filterOptions.min_pay_rate}
+            onChange={(e) => setFilterOptions({...filterOptions, min_pay_rate : e.target.value})}
+          />
+          <TextField 
+            type='number' 
+            label='max'
+            value={filterOptions.max_pay_rate}
+            onChange={(e) => setFilterOptions({...filterOptions, max_pay_rate : e.target.value})}
+          />
         </Stack>
       </Box>
+      <Button variant='contained' onClick={reset}>Reset</Button>
     </>
   )
 }
