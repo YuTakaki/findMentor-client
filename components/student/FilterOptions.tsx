@@ -32,7 +32,11 @@ const FilterOptions = ({
   };
 
   const reset = () => {
-    setFilterOptions([]);
+    setFilterOptions({
+      skills : [],
+      min_pay_rate : '',
+      max_pay_rate : '',
+    });
   }
 
   return (
@@ -46,7 +50,7 @@ const FilterOptions = ({
             flexWrap: 'wrap',
           }}
         >
-          {skillsOption.map(_skill => (
+          {skillsOption.map((_skill) => (
             <Button 
               key={_skill}
               variant={filterOptions.skills.includes(_skill) ? 'contained' : 'outlined'}

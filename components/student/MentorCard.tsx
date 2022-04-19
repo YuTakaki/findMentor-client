@@ -1,9 +1,11 @@
 import styled from '@emotion/styled';
-import { Avatar, Card, IconButton, List, ListItem, Typography,} from '@mui/material'
+import { Avatar, Card, CardMedia, IconButton, List, ListItem, Typography,} from '@mui/material'
 import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import Rating from '@mui/material/Rating';
+import { userType } from '../../types/types';
+import { getImageUrl } from '../../utils/getImageUrl';
 
 const CustomCard = styled(Card)(({
   padding: 10,
@@ -16,17 +18,23 @@ const CustomCard = styled(Card)(({
   border: '1px solid #afbbcb'
 }));
 
-const MentorCard = () => {
+interface MentorCardProps {
+  details : userType
+}
+const MentorCard = ({details} : MentorCardProps) => {
   return (
     <CustomCard elevation={1}>
-      <Avatar
+      <CardMedia
+        component="img"
+        image={getImageUrl(details)}
         sx={{
           width: '50px',
-          height: '50px'
+          height: '50px',
+          borderRadius: '50px'
         }}
-      ></Avatar>
-      <Typography variant="body1">Yu Takaki</Typography>
-      <Typography variant="caption">Software Engineer</Typography>
+      />
+      <Typography variant="body1">{details.first_name} {details.last_name}</Typography>
+      <Typography variant="caption">{details.job_position}</Typography>
       <Rating name="read-only" value={3} readOnly />
       <List
         disablePadding

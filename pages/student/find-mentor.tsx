@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { SyntheticEvent, useEffect, useState } from 'react'
 import Layout from '../../components/layout/Layout'
 import { Box, Button, Container, Fab, Grid, IconButton, Modal, Stack, TextField, Typography, Card} from '@mui/material'
 import MentorCard from '../../components/student/MentorCard';
@@ -9,6 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/styles';
 import axios from 'axios';
 import { GetServerSideProps } from 'next';
+import { userType } from '../../types/types';
 
 const filterContainerWidth = 300;
 
@@ -29,7 +30,8 @@ type FindMentorProps = {
 }
 const FindMentor = ({mentors_data} : FindMentorProps) => {
   const [openModal, setOpenModal] = useState(false);
-  const [mentors, setMentors] = useState(mentors_data || []);
+  const [search, setSearch] = useState('');
+  const [mentors, setMentors] = useState<userType[]>(mentors_data || []);
   const [filterOptions, setFilterOptions] = useState({
     skills : [],
     min_pay_rate : '',
@@ -45,13 +47,24 @@ const FindMentor = ({mentors_data} : FindMentorProps) => {
       (async() => {
         try {
           const filterMentor = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/api/mentor/filter?skills=${filterOptions.skills}&min=${filterOptions.min_pay_rate}&max=${filterOptions.max_pay_rate}`, {withCredentials: true});
-          setMentors(filterMentor.data.mentors); 
+          setMentors(filterMentor.data.mentors);
+          console.log(filterMentor.data.mentors);
         } catch (error) {
           console.log(error);
         }
       })();
     }
   }, [filterOptions, mentors_data]);
+
+  const searchMentorByKeyword = async(e : SyntheticEvent) => {
+    try {
+      e.preventDefault();
+      const searchMentors = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/api/mentor/?q=${search}`, {withCredentials: true});
+      setMentors(searchMentors.data.mentors);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <Layout>
       <Container>
@@ -71,10 +84,12 @@ const FindMentor = ({mentors_data} : FindMentorProps) => {
                   padding: 4
                 }}
               >
-                <form>
+                <form onSubmit={searchMentorByKeyword}>
                   <TextField 
                     fullWidth
                     label='search'
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                   />
                   <Button
                     type='submit'
@@ -95,17 +110,17 @@ const FindMentor = ({mentors_data} : FindMentorProps) => {
               }}
               spacing={3}
             >
-              {mentors.map((i) => (
+              {mentors.map((mentor) => (
                 <Grid
                   item
-                  key={i}
+                  key={mentor.id}
                   md={4}
                   sm={6}
                   xs={12}
                 >
                   <Link href='/s'>
                     <a>
-                      <MentorCard/>
+                      <MentorCard details={mentor}/>
                     </a>
                   </Link>
                 </Grid>

@@ -1,8 +1,14 @@
 export type userType = {
-  username: string,
-  email: string,
-  id: string,
-  profile_img?: string,
+  id : string,
+  username : string,
+  first_name : string,
+  last_name : string,
+  email : string,
+  account_type : string,
+  job_position : string,
+  pay_rate : string,
+  bio : string,
+  profile_img : string,
 }
 
 export type authResponseType = {
@@ -35,7 +41,7 @@ export type registerFormTypes = {
 export type step1FormType = {
   job_position : string,
   bio: string,
-  profile_img: '' | File,
+  profile_img:  | File,
 }
 
 export type StepPropType = {
