@@ -7,6 +7,8 @@ import FilterOptions from '../../components/student/FilterOptions';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/styles';
+import axios from 'axios';
+import { GetServerSideProps } from 'next';
 
 const filterContainerWidth = 300;
 
@@ -21,8 +23,13 @@ const CustomBox = styled(Box)(({
   flexDirection: 'column',
   gridGap: '10px'
 }))
-const FindMentor = () => {
+
+type FindMentorProps = {
+  mentors_data: any[]
+}
+const FindMentor = ({mentors_data} : FindMentorProps) => {
   const [openModal, setOpenModal] = useState(false);
+  const [mentors, setMentors] = useState(mentors_data || []);
 
   const closeModal = () => {
     setOpenModal(false);
@@ -70,7 +77,7 @@ const FindMentor = () => {
               }}
               spacing={3}
             >
-              {[1,2,3,4,5,6,7,8,9,0].map((i) => (
+              {mentors.map((i) => (
                 <Grid
                   item
                   key={i}
@@ -155,4 +162,27 @@ const FindMentor = () => {
   )
 }
 
+
+export const getServerSideProps: GetServerSideProps = async({req}) =>{
+  try {
+    const getMentors = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/api/mentor`, {
+      withCredentials: true, 
+      headers: {
+        Cookie: req.headers.cookie!
+      }});
+
+    return {
+      props : {
+        mentors_data : getMentors.data.mentors
+      }
+    }
+    
+  } catch (error : any) {
+    console.log(error.response);
+
+    return {
+      props : {}
+    }
+  }
+}
 export default FindMentor
