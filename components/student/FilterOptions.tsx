@@ -1,9 +1,26 @@
 import { Box, Button, Stack, TextField, Typography } from '@mui/material'
 import React from 'react'
 
+interface FilterOptionsProps {
+  skills : string[],
+  setSkills : Function
+}
 
+const FilterOptions = ({
+  skills,
+  setSkills,
+} : FilterOptionsProps) => {
+  const skillsOption = ['java', 'javascript', 'python', 'react', 'css', 'html', 'ruby', 'python', 'django'];
+  const handleFilterSkills = (value: string) => {
+    let data;
+    if (skills.includes(value)) {
+      data = skills.filter(_skill => _skill !== value);
+    } else {
+      data = [...skills, value];
+    }
+    setSkills(data);
+  }
 
-const FilterOptions = () => {
   return (
     <>
       <Box>
@@ -15,8 +32,12 @@ const FilterOptions = () => {
             flexWrap: 'wrap',
           }}
         >
-          {['java', 'javascript', 'python', 'react', 'css', 'html', 'ruby', 'python', 'django'].map(_skill => (
-            <Button key={_skill} variant='contained'>{_skill}</Button>
+          {skillsOption.map(_skill => (
+            <Button 
+              key={_skill}
+              variant={skills.includes(_skill) ? 'contained' : 'outlined'}
+              onClick={() => handleFilterSkills(_skill)}
+            >{_skill}</Button>
           ))}
         </Box>
       </Box>

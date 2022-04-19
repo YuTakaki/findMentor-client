@@ -30,6 +30,7 @@ type FindMentorProps = {
 const FindMentor = ({mentors_data} : FindMentorProps) => {
   const [openModal, setOpenModal] = useState(false);
   const [mentors, setMentors] = useState(mentors_data || []);
+  const [skills, setSkills] = useState([]);
 
   const closeModal = () => {
     setOpenModal(false);
@@ -105,7 +106,7 @@ const FindMentor = ({mentors_data} : FindMentorProps) => {
             }}
           >
             <CustomBox sx={{width: filterContainerWidth}}>
-              <FilterOptions/>
+              <FilterOptions skills={skills} setSkills={setSkills}/>
             </CustomBox>
 
           </Box>
@@ -120,7 +121,7 @@ const FindMentor = ({mentors_data} : FindMentorProps) => {
           }
         }}>
           <Fab color="primary" onClick={() => setOpenModal(true)}>
-            <FilterAltIcon  />
+            <FilterAltIcon />
           </Fab>
         </Box>
         <Modal
@@ -154,7 +155,7 @@ const FindMentor = ({mentors_data} : FindMentorProps) => {
               </IconButton>
 
             </Box>
-            <FilterOptions />
+            <FilterOptions skills={skills} setSkills={setSkills}/>
           </Card>
         </Modal>
       </Container>
