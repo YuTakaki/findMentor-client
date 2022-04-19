@@ -34,6 +34,7 @@ const FindMentor = ({mentors_data} : FindMentorProps) => {
   const [mentors, setMentors] = useState<userType[]>(mentors_data || []);
   const [filterOptions, setFilterOptions] = useState({
     skills : [],
+    willSearch: false,
     min_pay_rate : '',
     max_pay_rate : '',
   });
@@ -43,24 +44,33 @@ const FindMentor = ({mentors_data} : FindMentorProps) => {
   }
 
   useEffect(() => {
-    if(mentors_data !== undefined){
+    if(filterOptions.willSearch === true){
       (async() => {
         try {
           const filterMentor = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/api/mentor/filter?skills=${filterOptions.skills}&min=${filterOptions.min_pay_rate}&max=${filterOptions.max_pay_rate}`, {withCredentials: true});
           setMentors(filterMentor.data.mentors);
-          console.log(filterMentor.data.mentors);
         } catch (error) {
           console.log(error);
         }
       })();
     }
-  }, [filterOptions, mentors_data]);
+  }, [filterOptions]);
+
+  const reset = (willSearch : boolean) => {
+    setFilterOptions({
+      willSearch,
+      skills : [],
+      min_pay_rate : '',
+      max_pay_rate : '',
+    });
+  }
 
   const searchMentorByKeyword = async(e : SyntheticEvent) => {
     try {
       e.preventDefault();
       const searchMentors = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/api/mentor/?q=${search}`, {withCredentials: true});
       setMentors(searchMentors.data.mentors);
+      reset(false);
     } catch (error) {
       console.log(error);
     }
@@ -138,7 +148,7 @@ const FindMentor = ({mentors_data} : FindMentorProps) => {
             }}
           >
             <CustomBox sx={{width: filterContainerWidth}}>
-              <FilterOptions filterOptions={filterOptions} setFilterOptions={setFilterOptions}/>
+              <FilterOptions filterOptions={filterOptions} setFilterOptions={setFilterOptions} reset={reset}/>
             </CustomBox>
 
           </Box>
@@ -187,7 +197,7 @@ const FindMentor = ({mentors_data} : FindMentorProps) => {
               </IconButton>
 
             </Box>
-            <FilterOptions filterOptions={filterOptions} setFilterOptions={setFilterOptions}/>
+            <FilterOptions filterOptions={filterOptions} setFilterOptions={setFilterOptions} reset={reset}/>
           </Card>
         </Modal>
       </Container>
