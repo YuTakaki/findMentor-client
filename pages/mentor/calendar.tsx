@@ -16,10 +16,10 @@ import {
   ConfirmationDialog
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { EditRecurrenceMenu } from '@devexpress/dx-react-scheduler-material-ui';
-import { FormControl, InputLabel, Menu, MenuItem, Select, Snackbar } from '@mui/material';
+import { FormControl, MenuItem, Select, Snackbar } from '@mui/material';
 import Alert from '@mui/material/Alert';
-import axios from 'axios';
 import Layout from '../../components/layout/Layout';
+import { get } from '../../services/request';
 
 type schedulesType = {
   id: number,
@@ -40,7 +40,7 @@ const Calendar = () => {
   useEffect(() => {
     (async() => {
       try {
-        const user_schedules = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/api/mentor/schedule`, {withCredentials: true});
+        const user_schedules = await get('/api/mentor/schedule');
         setSchedules(user_schedules.data);
       } catch (error) {
         console.log(error);
@@ -78,8 +78,6 @@ const Calendar = () => {
         data = schedules.filter(appointment => appointment.id !== deleted)
         setSchedules(data);
       }
-      // axios.post(`${process.env.NEXT_PUBLIC_SERVER}/api/mentor/schedule`, data, {withCredentials: true})
-      // .catch(e => console.log(e));
 
     } catch (error:any) {
       console.log(error)

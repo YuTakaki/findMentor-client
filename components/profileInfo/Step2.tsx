@@ -1,10 +1,7 @@
 import { Autocomplete, Button, Chip, Stack, TextField, Typography } from '@mui/material'
-import axios from 'axios'
 import React, { SyntheticEvent, useEffect, useState } from 'react'
+import { get, post } from '../../services/request';
 import { StepPropType } from '../../types/types';
-
-
-const {NEXT_PUBLIC_SERVER} = process.env;
 
 const Step2 = ({setActiveStepHandler} : StepPropType) => {
   const languages = ['javascript', 'java', 'python',1,2,3,4,5,6,7,3,8];
@@ -15,7 +12,7 @@ const Step2 = ({setActiveStepHandler} : StepPropType) => {
   useEffect(() => {
     (async() => {
       try {
-        const getUsersProgLanguages = await axios.get(`${NEXT_PUBLIC_SERVER}/api/skills/`);
+        const getUsersProgLanguages = await get(`/api/skills/`);
         const data = getUsersProgLanguages.data.skills.map((_data : {skill : string}) => _data.skill)
         setUserLanguages(data);
         
@@ -44,7 +41,7 @@ const Step2 = ({setActiveStepHandler} : StepPropType) => {
   const saveHandler = async() => {
     try {
       if(userLanguages.length > 0){
-        await axios.post(`${NEXT_PUBLIC_SERVER}/api/skills/`, userLanguages);
+        await post('/api/skills/', userLanguages);
         setActiveStepHandler(2)
       } else {
         setShowError(true)

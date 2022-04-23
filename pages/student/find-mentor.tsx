@@ -7,9 +7,9 @@ import FilterOptions from '../../components/student/FilterOptions';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/styles';
-import axios from 'axios';
 import { GetServerSideProps } from 'next';
 import { userType } from '../../types/types';
+import { get } from '../../services/request';
 
 const filterContainerWidth = 300;
 
@@ -47,7 +47,7 @@ const FindMentor = ({mentors_data} : FindMentorProps) => {
     if(filterOptions.willSearch === true){
       (async() => {
         try {
-          const filterMentor = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/api/mentor/filter?skills=${filterOptions.skills}&min=${filterOptions.min_pay_rate}&max=${filterOptions.max_pay_rate}`, {withCredentials: true});
+          const filterMentor = await get(`/api/mentor/filter?skills=${filterOptions.skills}&min=${filterOptions.min_pay_rate}&max=${filterOptions.max_pay_rate}`);
           setMentors(filterMentor.data.mentors);
         } catch (error) {
           console.log(error);
@@ -68,7 +68,7 @@ const FindMentor = ({mentors_data} : FindMentorProps) => {
   const searchMentorByKeyword = async(e : SyntheticEvent) => {
     try {
       e.preventDefault();
-      const searchMentors = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/api/mentor/?q=${search}`, {withCredentials: true});
+      const searchMentors = await get(`/api/mentor/?q=${search}`);
       setMentors(searchMentors.data.mentors);
       reset(false);
     } catch (error) {
@@ -208,11 +208,9 @@ const FindMentor = ({mentors_data} : FindMentorProps) => {
 
 export const getServerSideProps: GetServerSideProps = async({req}) =>{
   try {
-    const getMentors = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/api/mentor`, {
-      withCredentials: true, 
-      headers: {
-        Cookie: req.headers.cookie!
-      }});
+    const getMentors = await get(`/api/mentor`,{headers: {
+      Cookie: req.headers.cookie!
+    }});
 
     return {
       props : {

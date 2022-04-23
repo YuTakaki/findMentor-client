@@ -1,7 +1,7 @@
-import axios from 'axios';
 import { GetServerSideProps } from 'next';
 import React from 'react';
 import Layout from '../../../components/layout/Layout';
+import { get } from '../../../services/request';
 
 const Mentor = () => {
   return (
@@ -15,13 +15,13 @@ const Mentor = () => {
 export const getServerSideProps : GetServerSideProps = async({params, req}) => {
   try {
     const mentor_id = params!.mentor_id;
-    const mentor_details = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/api/mentor/${mentor_id}`, {withCredentials: true, headers: {
+    const mentor_details = await get(`/api/mentor/${mentor_id}`, {headers: {
       Cookie: req.headers.cookie!
     }});
     console.log(mentor_details);
     return {
       props : {
-        mentor_details,
+        mentor_details : mentor_details.data
       }
     }
     
