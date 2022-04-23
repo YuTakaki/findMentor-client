@@ -75,7 +75,7 @@ const StudentDashboard = () => {
             <Grid container spacing={3} sx={{paddingTop: 3}}>
               {[1,2,3,4,5,6].map((i) => (
                 <Grid item key={i} xs={12} sm={4} md={3}>
-                  <MentorCard />
+                  {/* <MentorCard de /> */}
                 </Grid>
               ))}
 

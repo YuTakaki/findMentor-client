@@ -6,6 +6,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import Rating from '@mui/material/Rating';
 import { userType } from '../../types/types';
 import { getImageUrl } from '../../utils/getImageUrl';
+import Link from 'next/link';
 
 const CustomCard = styled(Card)(({
   padding: 10,
@@ -23,43 +24,48 @@ interface MentorCardProps {
 }
 const MentorCard = ({details} : MentorCardProps) => {
   return (
-    <CustomCard elevation={1}>
-      <CardMedia
-        component="img"
-        image={getImageUrl(details)}
-        sx={{
-          width: '50px',
-          height: '50px',
-          borderRadius: '50px'
-        }}
-      />
-      <Typography variant="body1">{details.first_name} {details.last_name}</Typography>
-      <Typography variant="caption">{details.job_position}</Typography>
-      <Rating name="read-only" value={3} readOnly />
-      <List
-        disablePadding
-        sx={{
-          display: 'flex',
-          flexWrap: 'wrap'
-        }}
-      >
-        <ListItem disablePadding sx={{width: 'max-content'}}>
-          <IconButton>
-            <FacebookIcon />
-          </IconButton>
-        </ListItem>
-        <ListItem disablePadding sx={{width: 'max-content'}}>
-          <IconButton>
-            <LinkedInIcon />
-          </IconButton>
-        </ListItem>
-        <ListItem disablePadding sx={{width: 'max-content'}}>
-          <IconButton>
-            <GitHubIcon />
-          </IconButton>
-        </ListItem>
-      </List>
-    </CustomCard>
+    <Link href={`mentor/${details.id}`}>
+      <a>
+      <CustomCard elevation={1}>
+        <CardMedia
+          component="img"
+          image={getImageUrl(details)}
+          sx={{
+            width: '50px',
+            height: '50px',
+            borderRadius: '50px'
+          }}
+        />
+        <Typography variant="body1">{details.first_name} {details.last_name}</Typography>
+        <Typography variant="caption">{details.job_position}</Typography>
+        <Rating name="read-only" value={3} readOnly />
+        <List
+          disablePadding
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap'
+          }}
+        >
+          <ListItem disablePadding sx={{width: 'max-content'}}>
+            <IconButton>
+              <FacebookIcon />
+            </IconButton>
+          </ListItem>
+          <ListItem disablePadding sx={{width: 'max-content'}}>
+            <IconButton>
+              <LinkedInIcon />
+            </IconButton>
+          </ListItem>
+          <ListItem disablePadding sx={{width: 'max-content'}}>
+            <IconButton>
+              <GitHubIcon />
+            </IconButton>
+          </ListItem>
+        </List>
+      </CustomCard>
+      </a>
+    </Link>
+    
   )
 }
 
