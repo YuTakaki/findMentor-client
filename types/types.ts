@@ -10,6 +10,15 @@ export type userType = {
   bio : string,
   profile_img : string,
 }
+export type schedulesType = {
+  id: number,
+  startDate: Date | string,
+  endDate: Date | string,
+  title: string,
+  note: string,
+  rRule: string
+}
+
 
 export type authResponseType = {
   user : userType,

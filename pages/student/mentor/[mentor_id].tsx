@@ -4,6 +4,7 @@ import { GetServerSideProps } from 'next';
 import React, { SyntheticEvent, useState } from 'react';
 import Layout from '../../../components/layout/Layout';
 import Bio from '../../../components/student/Bio';
+import MentorSchedule from '../../../components/student/MentorSchedule';
 import { get } from '../../../services/request';
 import { userType } from '../../../types/types';
 import { getImageUrl } from '../../../utils/getImageUrl';
@@ -25,7 +26,7 @@ const Mentor = ({mentor_details} : MentorProps) => {
           spacing={2}
           sx={{
             padding: 5,
-            paddingBottom: 1,
+            paddingBottom: 3,
             paddingTop: 1
           }}
         >
@@ -56,7 +57,9 @@ const Mentor = ({mentor_details} : MentorProps) => {
             <Bio mentor_details={mentor_details} />
           </TabPanel>
           <TabPanel value='review'>Review</TabPanel>
-          <TabPanel value='schedule'>Schedule</TabPanel>
+          <TabPanel value='schedule'>
+            <MentorSchedule />
+          </TabPanel>
         </TabContext>
 
       </Box>

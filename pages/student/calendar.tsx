@@ -15,15 +15,8 @@ import {
 import { Snackbar } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Layout from '../../components/layout/Layout';
+import { schedulesType } from '../../types/types';
 
-type schedulesType = {
-  id: number,
-  startDate: Date | string,
-  endDate: Date | string,
-  title: string,
-  note: string,
-  rRule: string
-}
 
 
 const Calendar = () => {
