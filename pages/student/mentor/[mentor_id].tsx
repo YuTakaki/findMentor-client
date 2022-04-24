@@ -1,13 +1,65 @@
+import { TabContext, TabList, TabPanel } from '@mui/lab';
+import { Box, CardMedia, Stack, Tab, Tabs, Typography } from '@mui/material';
 import { GetServerSideProps } from 'next';
-import React from 'react';
+import React, { SyntheticEvent, useState } from 'react';
 import Layout from '../../../components/layout/Layout';
+import Bio from '../../../components/student/Bio';
 import { get } from '../../../services/request';
+import { userType } from '../../../types/types';
+import { getImageUrl } from '../../../utils/getImageUrl';
 
-const Mentor = () => {
+interface MentorProps {
+  mentor_details: userType
+}
+const Mentor = ({mentor_details} : MentorProps) => {
+  const [currentView, setCurrentView] = useState('bio');
+
+  const changeCurrentView = (e: SyntheticEvent, value: string) => {
+    setCurrentView(value);
+  }
   return (
     <Layout>
-      Mentor
+      <Box>
+        <Stack
+          direction='row'
+          spacing={2}
+          sx={{
+            padding: 5,
+            paddingBottom: 1,
+            paddingTop: 1
+          }}
+        >
+          <Box>
+            <CardMedia
+              component='img'
+              src={getImageUrl(mentor_details)}
+              sx={{
+                width: 150,
+                height: 150,
+                borderRadius: 150
+              }}
+            />
+            <Typography variant='h5' textAlign='center'>Yu Takaki</Typography>
+          </Box>
+        </Stack>
+        <TabContext value={currentView} >
+          <TabList
+            onChange={changeCurrentView}
+            sx={{borderBottom: '1px solid silver'}}
+          >
+            <Tab label="bio" value="bio"/>
+            <Tab label="review" value="review"/>
+            <Tab label="schedule" value="schedule"/>
+          </TabList>
 
+          <TabPanel value='bio'>
+            <Bio mentor_details={mentor_details} />
+          </TabPanel>
+          <TabPanel value='review'>Review</TabPanel>
+          <TabPanel value='schedule'>Schedule</TabPanel>
+        </TabContext>
+
+      </Box>
     </Layout>
   )
 }
