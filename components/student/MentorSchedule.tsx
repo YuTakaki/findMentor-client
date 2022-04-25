@@ -12,11 +12,26 @@ import {
   AppointmentTooltip,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { schedulesType } from '../../types/types';
-import { Paper } from '@mui/material';
+import { Button, Paper } from '@mui/material';
 
 interface MentorScheduleProps {
   mentor_schedules : schedulesType[]
 }
+
+const Content = (({
+  children, appointmentData, ...restProps
+} : any) => {
+  const handleClick = () => {
+    console.log(appointmentData);
+  }
+  return (
+    <AppointmentTooltip.Content {...restProps} appointmentData={appointmentData}>
+      <Button variant='contained' fullWidth onClick={handleClick}>Book</Button>
+    </AppointmentTooltip.Content>
+  )
+});
+
+
 const MentorSchedule = ({mentor_schedules} : MentorScheduleProps) => {
   const currentDate = new Date();
   return (
@@ -44,8 +59,7 @@ const MentorSchedule = ({mentor_schedules} : MentorScheduleProps) => {
           
         />
         <AppointmentTooltip
-          showOpenButton
-          showDeleteButton
+          contentComponent={Content}
         />
       </Scheduler>
     </Paper>

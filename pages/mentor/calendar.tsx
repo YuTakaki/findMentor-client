@@ -40,8 +40,7 @@ const Calendar = () => {
   useEffect(() => {
     (async() => {
       try {
-        const user_schedules = await get('/api/mentor/schedule');
-        console.log(user_schedules.data);
+        const user_schedules = await get('/api/mentors/schedules');
         const now = new Date();
         const data = user_schedules.data.map((_sched: schedulesType) => {
           const startDate = new Date(_sched.startDate);
@@ -98,7 +97,7 @@ const Calendar = () => {
         data = schedules.filter(appointment => appointment.id !== deleted)
         setSchedules(data);
       }
-      await post(`/api/mentor/schedule`, data);
+      await post(`/api/mentors/schedules`, data);
 
     } catch (error:any) {
       console.log(error)

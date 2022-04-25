@@ -75,7 +75,7 @@ export const getServerSideProps : GetServerSideProps = async({params, req}) => {
       Cookie: req.headers.cookie!
     }});
 
-    const mentor_schedules = await get(`/api/mentor/schedule/${mentor_id}`, {headers: {
+    const mentor_schedules = await get(`/api/mentors/schedules/${mentor_id}`, {headers: {
       Cookie: req.headers.cookie!
     }});
     console.log(mentor_schedules.data);
