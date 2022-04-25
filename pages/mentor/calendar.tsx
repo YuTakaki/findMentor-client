@@ -19,7 +19,7 @@ import { EditRecurrenceMenu } from '@devexpress/dx-react-scheduler-material-ui';
 import { FormControl, MenuItem, Select, Snackbar } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Layout from '../../components/layout/Layout';
-import { get } from '../../services/request';
+import { get, post } from '../../services/request';
 
 type schedulesType = {
   id: number,
@@ -41,9 +41,29 @@ const Calendar = () => {
     (async() => {
       try {
         const user_schedules = await get('/api/mentor/schedule');
-        setSchedules(user_schedules.data);
-      } catch (error) {
-        console.log(error);
+        console.log(user_schedules.data);
+        const now = new Date();
+        const data = user_schedules.data.map((_sched: schedulesType) => {
+          const startDate = new Date(_sched.startDate);
+          const endDate = new Date(_sched.endDate);
+          if (_sched.rRule) {
+            startDate.setMonth(now.getMonth());
+            startDate.setDate(now.getDate());
+            startDate.setFullYear(now.getFullYear());
+  
+            endDate.setMonth(now.getMonth());
+            endDate.setDate(now.getDate());
+            endDate.setFullYear(now.getFullYear());
+  
+            _sched.endDate = endDate;
+            _sched.startDate = startDate;
+          }
+          return _sched;
+        })
+        
+        setSchedules(data);
+      } catch (error: any) {
+        console.log(error.response);
       }
     })();
 
@@ -78,6 +98,7 @@ const Calendar = () => {
         data = schedules.filter(appointment => appointment.id !== deleted)
         setSchedules(data);
       }
+      await post(`/api/mentor/schedule`, data);
 
     } catch (error:any) {
       console.log(error)

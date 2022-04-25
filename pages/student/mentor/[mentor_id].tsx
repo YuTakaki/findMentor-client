@@ -6,13 +6,14 @@ import Layout from '../../../components/layout/Layout';
 import Bio from '../../../components/student/Bio';
 import MentorSchedule from '../../../components/student/MentorSchedule';
 import { get } from '../../../services/request';
-import { userType } from '../../../types/types';
+import { schedulesType, userType } from '../../../types/types';
 import { getImageUrl } from '../../../utils/getImageUrl';
 
 interface MentorProps {
-  mentor_details: userType
+  mentor_details: userType,
+  mentor_schedules: schedulesType[]
 }
-const Mentor = ({mentor_details} : MentorProps) => {
+const Mentor = ({mentor_details, mentor_schedules} : MentorProps) => {
   const [currentView, setCurrentView] = useState('bio');
 
   const changeCurrentView = (e: SyntheticEvent, value: string) => {
@@ -58,7 +59,7 @@ const Mentor = ({mentor_details} : MentorProps) => {
           </TabPanel>
           <TabPanel value='review'>Review</TabPanel>
           <TabPanel value='schedule'>
-            <MentorSchedule />
+            <MentorSchedule mentor_schedules={mentor_schedules}/>
           </TabPanel>
         </TabContext>
 
@@ -73,10 +74,15 @@ export const getServerSideProps : GetServerSideProps = async({params, req}) => {
     const mentor_details = await get(`/api/mentor/${mentor_id}`, {headers: {
       Cookie: req.headers.cookie!
     }});
-    console.log(mentor_details);
+
+    const mentor_schedules = await get(`/api/mentor/schedule/${mentor_id}`, {headers: {
+      Cookie: req.headers.cookie!
+    }});
+    console.log(mentor_schedules.data);
     return {
       props : {
-        mentor_details : mentor_details.data
+        mentor_details : mentor_details.data,
+        mentor_schedules: mentor_schedules.data,
       }
     }
     

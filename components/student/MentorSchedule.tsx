@@ -14,13 +14,15 @@ import {
 import { schedulesType } from '../../types/types';
 import { Paper } from '@mui/material';
 
-const MentorSchedule = () => {
+interface MentorScheduleProps {
+  mentor_schedules : schedulesType[]
+}
+const MentorSchedule = ({mentor_schedules} : MentorScheduleProps) => {
   const currentDate = new Date();
-  const [schedules, setSchedules] = useState<schedulesType[]>([]);
   return (
     <Paper>
       <Scheduler
-        data={schedules}
+        data={mentor_schedules}
       >
         <ViewState
           defaultCurrentDate={currentDate}
