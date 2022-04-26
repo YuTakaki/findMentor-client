@@ -33,6 +33,10 @@ const Calendar = ({mentor_schedules} : CalendarProps) => {
   const [alertOpen, setAlertOpen] = useState(false);
   const [category, setCategory] = useState('Schedule');
 
+  useEffect(() => {
+    console.log(schedules);
+  }, [schedules]);
+
   const handleClose = () => {
     setAlertOpen(false);
   }
@@ -56,7 +60,7 @@ const Calendar = ({mentor_schedules} : CalendarProps) => {
         data = schedules.filter(appointment => appointment.id !== deleted)
         setSchedules(data);
       }
-      await post(`/api/mentors/schedules`, data);
+      await post(`/api/mentors/schedules/`, data);
 
     } catch (error:any) {
       console.log(error)
