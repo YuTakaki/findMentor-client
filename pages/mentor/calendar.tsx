@@ -135,6 +135,10 @@ export const getServerSideProps : GetServerSideProps = async({req}) => {
     const user_schedules = await get('/api/mentors/schedules',{headers: {
       Cookie: req.headers.cookie!
     }});
+    const schedule = await get('/api/schedules',{headers: {
+      Cookie: req.headers.cookie!
+    }});
+    console.log(schedule.data);
     return {
       props : {
         mentor_schedules: mapAndFilterSchedule(user_schedules.data)

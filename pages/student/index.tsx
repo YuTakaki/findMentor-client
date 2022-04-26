@@ -6,6 +6,8 @@ import Layout from '../../components/layout/Layout';
 import { CalendarPicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import MentorCard from '../../components/student/MentorCard';
+import { GetServerSideProps } from 'next';
+import { get } from '../../services/request';
 
 const CustomCard = styled(Card)(({
   padding: 10,
@@ -88,4 +90,20 @@ const StudentDashboard = () => {
   )
 }
 
+export const getServerSideProps : GetServerSideProps = async({req}) => {
+  try {
+    const schedule = await get('/api/schedules',{headers: {
+      Cookie: req.headers.cookie!
+    }});
+    console.log(schedule.data);
+    return {
+      props: {}
+    }
+  } catch (error) {
+    return {
+      props: {}
+    }
+    
+  }
+}
 export default StudentDashboard
