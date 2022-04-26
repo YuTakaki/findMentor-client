@@ -8,6 +8,7 @@ import MentorSchedule from '../../../components/student/MentorSchedule';
 import { get } from '../../../services/request';
 import { schedulesType, userType } from '../../../types/types';
 import { getImageUrl } from '../../../utils/getImageUrl';
+import { mapAndFilterSchedule } from '../../../utils/mapAndFilterSchedule';
 
 interface MentorProps {
   mentor_details: userType,
@@ -78,11 +79,10 @@ export const getServerSideProps : GetServerSideProps = async({params, req}) => {
     const mentor_schedules = await get(`/api/mentors/schedules/${mentor_id}`, {headers: {
       Cookie: req.headers.cookie!
     }});
-    console.log(mentor_schedules.data);
     return {
       props : {
         mentor_details : mentor_details.data,
-        mentor_schedules: mentor_schedules.data,
+        mentor_schedules: mapAndFilterSchedule(mentor_schedules.data)
       }
     }
     

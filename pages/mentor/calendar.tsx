@@ -20,63 +20,22 @@ import { FormControl, MenuItem, Select, Snackbar } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Layout from '../../components/layout/Layout';
 import { get, post } from '../../services/request';
+import { mapAndFilterSchedule } from '../../utils/mapAndFilterSchedule';
+import { GetServerSideProps } from 'next';
+import { schedulesType } from '../../types/types';
 
-type schedulesType = {
-  id: number,
-  startDate: Date | string,
-  endDate: Date | string,
-  title: string,
-  note: string,
-  rRule: string
+interface CalendarProps {
+  mentor_schedules : schedulesType[]
 }
-
-
-const Calendar = () => {
+const Calendar = ({mentor_schedules} : CalendarProps) => {
   const currentDate = new Date();
-  const [schedules, setSchedules] = useState<schedulesType[]>([]);
+  const [schedules, setSchedules] = useState(mentor_schedules);
   const [alertOpen, setAlertOpen] = useState(false);
   const [category, setCategory] = useState('Schedule');
-
-  useEffect(() => {
-    (async() => {
-      try {
-        const user_schedules = await get('/api/mentors/schedules');
-        const now = new Date();
-        const data = user_schedules.data.map((_sched: schedulesType) => {
-          const startDate = new Date(_sched.startDate);
-          const endDate = new Date(_sched.endDate);
-          if (_sched.rRule) {
-            startDate.setMonth(now.getMonth());
-            startDate.setDate(now.getDate());
-            startDate.setFullYear(now.getFullYear());
-  
-            endDate.setMonth(now.getMonth());
-            endDate.setDate(now.getDate());
-            endDate.setFullYear(now.getFullYear());
-  
-            _sched.endDate = endDate;
-            _sched.startDate = startDate;
-          }
-          return _sched;
-        })
-        
-        setSchedules(data);
-      } catch (error: any) {
-        console.log(error.response);
-      }
-    })();
-
-  }, []);
-
-  useEffect(() => {
-    console.log(schedules);
-  }, [schedules]);
 
   const handleClose = () => {
     setAlertOpen(false);
   }
-
-  
 
   const onCommitChanges = async(props: any) => {
     try {
@@ -105,8 +64,6 @@ const Calendar = () => {
     }
   };
 
-
-  
   return (
     <Layout>
       <Snackbar
@@ -169,5 +126,22 @@ const Calendar = () => {
     </Layout>
   )
 }
-
+export const getServerSideProps : GetServerSideProps = async({req}) => {
+  try {
+    const user_schedules = await get('/api/mentors/schedules',{headers: {
+      Cookie: req.headers.cookie!
+    }});
+    return {
+      props : {
+        mentor_schedules: mapAndFilterSchedule(user_schedules.data)
+      }
+    }
+    
+  } catch (error) {
+    console.log(error);
+    return {
+      props: {}
+    }
+  }
+}
 export default Calendar;
