@@ -19,6 +19,16 @@ export type schedulesType = {
   rRule: string
 }
 
+export type appointmentType = {
+  id: number,
+  startDate: Date | string,
+  endDate: Date | string,
+  title: string,
+  note: string,
+  mentor: string,
+  student: string,
+}
+
 
 export type authResponseType = {
   user : userType,

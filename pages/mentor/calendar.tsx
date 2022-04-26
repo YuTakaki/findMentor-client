@@ -22,12 +22,13 @@ import Layout from '../../components/layout/Layout';
 import { get, post } from '../../services/request';
 import { mapAndFilterSchedule } from '../../utils/mapAndFilterSchedule';
 import { GetServerSideProps } from 'next';
-import { schedulesType } from '../../types/types';
+import { appointmentType, schedulesType } from '../../types/types';
 
 interface CalendarProps {
   mentor_schedules : schedulesType[]
+  user_appointments: appointmentType[]
 }
-const Calendar = ({mentor_schedules} : CalendarProps) => {
+const Calendar = ({mentor_schedules, user_appointments} : CalendarProps) => {
   const currentDate = new Date();
   const [schedules, setSchedules] = useState(mentor_schedules);
   const [alertOpen, setAlertOpen] = useState(false);
@@ -92,7 +93,7 @@ const Calendar = ({mentor_schedules} : CalendarProps) => {
       </FormControl>
       <Paper>
         <Scheduler
-          data={schedules}
+          data={category === 'Schedule' ? schedules : user_appointments}
         >
           <ViewState
             defaultCurrentDate={currentDate}
@@ -116,15 +117,19 @@ const Calendar = ({mentor_schedules} : CalendarProps) => {
           <EditingState
             onCommitChanges={onCommitChanges}
           />
-          <EditRecurrenceMenu />
-          <IntegratedEditing />
           <AppointmentTooltip
-            showOpenButton
-            showDeleteButton
+            showOpenButton={category === 'Schedule'}
+            showDeleteButton={category === 'Schedule'}
           />
-          <ConfirmationDialog />
-          <AppointmentForm/>
-          <DragDropProvider />
+          {category === 'Schedule' && (
+            <>
+              <EditRecurrenceMenu />
+              <IntegratedEditing />
+              <AppointmentForm/>
+              <ConfirmationDialog />
+              <DragDropProvider />
+            </>
+          )}
         </Scheduler>
       </Paper>
     </Layout>
@@ -135,13 +140,14 @@ export const getServerSideProps : GetServerSideProps = async({req}) => {
     const user_schedules = await get('/api/mentors/schedules',{headers: {
       Cookie: req.headers.cookie!
     }});
-    const schedule = await get('/api/schedules',{headers: {
+    const user_appointments = await get('/api/schedules',{headers: {
       Cookie: req.headers.cookie!
     }});
-    console.log(schedule.data);
+
     return {
       props : {
-        mentor_schedules: mapAndFilterSchedule(user_schedules.data)
+        mentor_schedules: mapAndFilterSchedule(user_schedules.data),
+        user_appointments: user_appointments.data
       }
     }
     
