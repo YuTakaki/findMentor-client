@@ -16,7 +16,8 @@ export type schedulesType = {
   endDate: Date | string,
   title: string,
   note: string,
-  rRule: string
+  rRule?: string,
+  exDate?: string
 }
 
 export type appointmentType = {

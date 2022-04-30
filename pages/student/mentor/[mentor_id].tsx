@@ -79,6 +79,7 @@ export const getServerSideProps : GetServerSideProps = async({params, req}) => {
     const mentor_schedules = await get(`/api/mentors/schedules/${mentor_id}`, {headers: {
       Cookie: req.headers.cookie!
     }});
+    
     return {
       props : {
         mentor_details : mentor_details.data,
