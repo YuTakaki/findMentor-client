@@ -16,22 +16,20 @@ import { Snackbar } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Layout from '../../components/layout/Layout';
 import { schedulesType } from '../../types/types';
+import { GetServerSideProps } from 'next';
+import { get } from '../../services/request';
 
+interface CalendarProps {
+  schedules : schedulesType[]
+}
 
-
-const Calendar = () => {
+const Calendar = ({schedules} : CalendarProps) => {
   const currentDate = new Date();
-  const [schedules, setSchedules] = useState<schedulesType[]>([]);
   const [alertOpen, setAlertOpen] = useState(false);
-
-  useEffect(() => {
-    console.log(schedules);
-  }, [schedules]);
 
   const handleClose = () => {
     setAlertOpen(false);
   }
-
 
   return (
     <Layout>
@@ -69,13 +67,34 @@ const Calendar = () => {
             
           />
           <AppointmentTooltip
-            showOpenButton
-            showDeleteButton
+            showCloseButton
           />
         </Scheduler>
       </Paper>
     </Layout>
   )
+}
+
+export const getServerSideProps : GetServerSideProps = async({req}) => {
+  try {
+    const schedule = await get('/api/schedules', {
+      headers: {
+        Cookie : req.headers.cookie!
+      }
+    })
+    return {
+      props : {
+        schedules : schedule.data
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    return {
+      props : {}
+    }
+  }
+
+
 }
 
 export default Calendar;
