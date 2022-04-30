@@ -93,8 +93,6 @@ export const getServerSideProps : GetServerSideProps = async({req}) => {
       props : {}
     }
   }
-
-
 }
 
 export default Calendar;

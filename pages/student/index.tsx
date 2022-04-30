@@ -3,11 +3,18 @@ import styled from '@emotion/styled'
 import { RootStateOrAny, useSelector } from 'react-redux';
 import theme from '../../styles/theme/theme';
 import Layout from '../../components/layout/Layout';
-import { CalendarPicker, LocalizationProvider } from '@mui/lab';
+import { CalendarPicker, LocalizationProvider, PickersDayProps } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import MentorCard from '../../components/student/MentorCard';
+import Calendar from 'react-calendar';
 import { GetServerSideProps } from 'next';
 import { get } from '../../services/request';
+import { schedulesType } from '../../types/types';
+import 'react-calendar/dist/Calendar.css';
+
+interface StudentDashboardProps {
+  schedules : string[]
+}
 
 const CustomCard = styled(Card)(({
   padding: 10,
@@ -17,7 +24,9 @@ const CustomCard = styled(Card)(({
   flexDirection: 'column',
 }));
 
-const StudentDashboard = () => {
+
+const StudentDashboard = ({ schedules } : StudentDashboardProps) => {
+  console.log(schedules.map(sched => new Date(sched)))
   const mode = useSelector((state : RootStateOrAny) => state.themeReducer);
   const style = theme(mode);
   return (
@@ -65,11 +74,7 @@ const StudentDashboard = () => {
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <LocalizationProvider
-              dateAdapter={AdapterDateFns}
-            >
-              <CalendarPicker date={new Date()} onChange={(newDate) => console.log(newDate)} />
-            </LocalizationProvider>
+            <Calendar value={schedules.length > 0 ? schedules.map(sched => new Date(sched)) : null} />
           </Grid>
 
           <Grid item xs={12}>
@@ -92,12 +97,13 @@ const StudentDashboard = () => {
 
 export const getServerSideProps : GetServerSideProps = async({req}) => {
   try {
-    const schedule = await get('/api/schedules',{headers: {
+    const schedules = await get('/api/schedules',{headers: {
       Cookie: req.headers.cookie!
     }});
-    console.log(schedule.data);
     return {
-      props: {}
+      props: {
+        schedules : schedules.data.map((sched : schedulesType)=> sched.startDate)
+      }
     }
   } catch (error) {
     return {
