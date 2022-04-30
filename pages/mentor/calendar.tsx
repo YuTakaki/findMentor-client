@@ -117,19 +117,15 @@ const Calendar = ({mentor_schedules, user_appointments} : CalendarProps) => {
           <EditingState
             onCommitChanges={onCommitChanges}
           />
+          <EditRecurrenceMenu />
+          <IntegratedEditing />
           <AppointmentTooltip
             showOpenButton={category === 'Schedule'}
             showDeleteButton={category === 'Schedule'}
           />
-          {category === 'Schedule' && (
-            <>
-              <EditRecurrenceMenu />
-              <IntegratedEditing />
-              <AppointmentForm/>
-              <ConfirmationDialog />
-              <DragDropProvider />
-            </>
-          )}
+          <AppointmentForm/>
+          <ConfirmationDialog />
+          <DragDropProvider />
         </Scheduler>
       </Paper>
     </Layout>
